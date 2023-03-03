@@ -17,10 +17,57 @@ public class Stop {
 		this.name = (String) stop_instances.get("name");
 		this.km_from_start = (int) stop_instances.get("km_from_start");
 		this.waiting_time = (long) stop_instances.get("waiting_time");
+	}
+	
+	public void setTiming(float train_speed) {
 		if(previous_stop!=null) {
-			this.starting_time=this.getPrevious_stop().reaching_time.plusMinutes(this.getPrevious_stop().getWaiting_time());
+			//this.starting_time=this.getPrevious_stop().reaching_time.plusMinutes(this.getPrevious_stop().getWaiting_time());
+			//this.reaching_time=this.starting_time.plusMinutes(calculateTravelMinutes(train_speed));
+			this.reaching_time=this.getPrevious_stop().starting_time.plusSeconds(calculateTravelSeconds(train_speed));
+			this.starting_time=this.reaching_time.plusMinutes(this.waiting_time);
 		}
 	}
+	
+	public String toString() {
+		String str="\n-name:"+this.name
+				+ "\n-km_from_start:"+this.km_from_start
+				+"\n-waiting_time:"+this.waiting_time
+				+"\n-reaching_time:"+this.reaching_time
+				+"\n-starting_time:"+this.starting_time;
+		  if(this.previous_stop!=null&&this.next_stop!=null) {
+			  str+="\n-prev_top_name:"+this.previous_stop.getName()
+			  +"\n-next_stop_name:"+this.next_stop.getName()+"\n";
+		  }
+		  else if(this.previous_stop==null&&this.next_stop!=null) {
+			  str+="\n-prev_top_name:"+"null"
+			  +"\n-next_stop_name:"+this.next_stop.getName()+"\n";
+		  }
+		  else if(this.previous_stop!=null&&this.next_stop==null) {
+			  str+="\n-prev_top_name:"+this.previous_stop.getName()
+			  +"\n-next_stop_name:"+"null"+"\n";
+		  }
+		return str;
+	}
+	private float calcuateKmPerMinute(float train_speed) {
+		float km_per_min=(train_speed/60);
+		return km_per_min;
+	}
+	
+	private long calculateTravelSeconds(float train_speed){
+		float accurate_secs;
+		int current_stop_km=this.km_from_start;
+		int previous_stop_km=0;
+		if(this.getPrevious_stop()!=null) {
+			previous_stop_km=this.getPrevious_stop().getKm_from_start();
+		}
+		int km_between_stops=current_stop_km-previous_stop_km;
+		accurate_secs=calcuateKmPerMinute(train_speed)*km_between_stops;
+		long secs=Math.round(accurate_secs*60);
+		//System.out.println(accurate_secs);
+		//System.out.println(secs);
+		return secs;
+	}
+	
 	public String getName() {
 		return name;
 	}

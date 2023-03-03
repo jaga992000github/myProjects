@@ -65,7 +65,7 @@ public class Coach {
 						seat_ratio_index=1;
 					}
 //-----------------//
-					System.out.println(seat_instances.get("seat_position")+" seat no"+ seat_no+" birth "+seat_instances.get("birth_position")+" left RAC "+seat_instances.get("RAC_replacable"));//00000000000000000000000000000000000000
+//+++++++++++++++++//System.out.println(seat_instances.get("seat_position")+" seat no"+ seat_no+" birth "+seat_instances.get("birth_position")+" left RAC "+seat_instances.get("RAC_replacable"));//00000000000000000000000000000000000000
 				}
 				else if(seat_ratio_index==1) {
 					seat_instances.put("seat_position",seat_pos[second_side_seat_count-1]);
@@ -85,7 +85,7 @@ public class Coach {
 						seat_instances.put("birth_position",'0');
 					}
 //------------------//
-					System.out.println(seat_instances.get("seat_position")+" seat no"+ seat_no+" birth "+seat_instances.get("birth_position")+" right RAC "+seat_instances.get("RAC_replacable"));//000000000000000000000000000000000000
+//+++++++++++++++++//System.out.println(seat_instances.get("seat_position")+" seat no"+ seat_no+" birth "+seat_instances.get("birth_position")+" right RAC "+seat_instances.get("RAC_replacable"));//000000000000000000000000000000000000
 				}
 				seat_instances.put("booked_status",false);
 				seat_instances.put("booked_as","vacant");
@@ -98,7 +98,7 @@ public class Coach {
 				seat_no++;
 			}
 		}	
-		System.out.println("\n");	
+//+++++++++++++++++//System.out.println("\n");	
 		return coach_seats;
 	}
 

@@ -1,5 +1,6 @@
 package view.admin.booking_admin.inputs;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -29,35 +30,40 @@ public class TrainInputs {
 		int train_no=1234;//scan.nextInt();
 		//System.out.println("Enter Route");
 		ArrayList<HashMap<String,Object>>stop_instances_list =new ArrayList<HashMap<String,Object>>();
-	
+		//System.out.println("Enter Train Average speed in km/hr ");
+		float train_speed=90;//scan.nextInt();
+		//System.out.println("Enter train starting time in HH:MM ");
+		String str_train_starting_time="05:00";//scan.next();
+		LocalTime train_starting_time=LocalTime.parse(str_train_starting_time);
+		
 		HashMap<String,Object> stop_instances1=new HashMap<String,Object>();
 		stop_instances1.put("name","chennai");
 		stop_instances1.put("km_from_start",0);
-		stop_instances1.put("wating_time",5);
+		stop_instances1.put("waiting_time",(long)5);
 		stop_instances_list.add(stop_instances1);
 		
 		HashMap<String,Object> stop_instances2=new HashMap<String,Object>();
 		stop_instances2.put("name","viluppuram");
 		stop_instances2.put("km_from_start",5);
-		stop_instances2.put("wating_time",5);
+		stop_instances2.put("waiting_time",(long)5);
 		stop_instances_list.add(stop_instances2);
 		
 		HashMap<String,Object> stop_instances3=new HashMap<String,Object>();
 		stop_instances3.put("name","tiruppur");
 		stop_instances3.put("km_from_start",14);
-		stop_instances3.put("wating_time",5);
+		stop_instances3.put("waiting_time",(long)5);
 		stop_instances_list.add(stop_instances3);
 		
 		HashMap<String,Object> stop_instances4=new HashMap<String,Object>();
 		stop_instances4.put("name","erode");
 		stop_instances4.put("km_from_start",27);
-		stop_instances4.put("wating_time",5);
+		stop_instances4.put("waiting_time",(long)5);
 		stop_instances_list.add(stop_instances4);
 		
 		HashMap<String,Object> stop_instances5=new HashMap<String,Object>();
 		stop_instances5.put("name","coimbatore");
 		stop_instances5.put("km_from_start",32);
-		stop_instances5.put("wating_time",5);
+		stop_instances5.put("waiting_time",(long)5);
 		stop_instances_list.add(stop_instances5);
 //		while(true) {
 //			System.out.println("1->add Stop"
@@ -83,9 +89,11 @@ public class TrainInputs {
 //		}
 		
 		ArrayList<HashMap<String,Object>> carriage_list=getCarriageDetails();
-		
+	
 		train_instances.put("train_name",  train_name);
 		train_instances.put("train_no",  train_no);
+		train_instances.put("train_speed",  train_speed);
+		train_instances.put("train_starting_time",  train_starting_time);
 		train_instances.put("stop_instances_list",  stop_instances_list);
 		train_instances.put("carriage_list", carriage_list);
 		
