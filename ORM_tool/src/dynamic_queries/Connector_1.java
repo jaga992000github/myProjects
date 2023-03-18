@@ -7,79 +7,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Connector_1 implements  Connector{
-	private Connection con;
-	private PreparedStatement pst;
-	private ResultSet rs;
-	private String database;
-	private String table;
-	
-	
-    public String getDatabase() {
-		return database;
+	private Connection con=connect();
+	Connector_1() throws ClassNotFoundException, SQLException {
+		
 	}
-
-	public void setDatabase(String database) {
-		this.database = database;
-	}
-
-	public String getTable() {
-		return table;
-	}
-
-	public void setTable(String table) {
-		this.table = table;
-	}
-
-	public Connection getCon() {
-		return con;
-	}
-
-	public PreparedStatement getPst() {
-		return pst;
-	}
-
-	public ResultSet getRs() {
-		return rs;
+	@Override
+	public Connection getConnection() {
+		return this.con;
 	}
 	
-	
-	public void connect() throws ClassNotFoundException, SQLException  {
-		String url="jdbc:mysql://127.0.0.1:3306/"+this.database;
+
+	@Override
+	public Connection connect() throws ClassNotFoundException, SQLException  {
+		String url="jdbc:mysql://127.0.0.1:3306";//+this.database;
 		String user="root";
 		String password="";
 		//jdbc:mysql://127.0.0.1:3306/?user=root
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		con=DriverManager.getConnection(url,user,password);
-		
+		Connection con=DriverManager.getConnection(url,user,password);
+		return con;
 	}
-	
-	public void close() throws SQLException  {
-		pst.close();
-		con.close();
-		rs.close();
-		//pst=null;
-		//con=null;
-		//rs=null;
-	}
-
 	@Override
-	public Connection getConnection() {
-		// TODO Auto-generated method stub
-		return null;
+	public void closeConnection() throws SQLException  {
+		this.con.close();
+		this.con=null;
 	}
-
-	@Override
-	public PreparedStatement getPreparedStatement() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ResultSet getResultSet() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
 
 
