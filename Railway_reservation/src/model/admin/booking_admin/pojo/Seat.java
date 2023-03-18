@@ -9,6 +9,8 @@ public class Seat {
 	private boolean booked_status;
 	private String booked_as;
 	private boolean RAC_replacable;
+	private int last_stop_km_from_start;
+	
 	
 	@Override
 	public String toString(){
@@ -67,6 +69,12 @@ public class Seat {
 
 	public void setRAC_replacable(boolean rAC_replacable) {
 		RAC_replacable = rAC_replacable;
+	}
+	public int getLast_stop_km_from_start() {
+		return last_stop_km_from_start;
+	}
+	public void setLast_stop_km_from_start(int last_stop_km_from_start) {
+		this.last_stop_km_from_start = last_stop_km_from_start;
 	}
 
 	

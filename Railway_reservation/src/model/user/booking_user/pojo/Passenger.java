@@ -13,6 +13,7 @@ public class Passenger {
 	private Seat seat;
 	private int pnr_no;
 	private String booked_status;
+	private char preferd_birth;
 	
 	public Passenger (HashMap<String, Object> passenger_instances) {
 		this.name=(String) passenger_instances.get("name");
@@ -22,6 +23,7 @@ public class Passenger {
 			this.ph_no=(int) passenger_instances.get("ph_no");
 			this.email=(String) passenger_instances.get("email");
 			this.seat=(Seat) passenger_instances.get("seat");
+			this.setPreferd_birth((char) passenger_instances.get("preferd_birth"));
 		}
 		this.pnr_no=(int) passenger_instances.get("pnr_no");
 		this.booked_status=(String) passenger_instances.get("booked_status");
@@ -90,6 +92,14 @@ public class Passenger {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public char getPreferd_birth() {
+		return preferd_birth;
+	}
+
+	public void setPreferd_birth(char preferd_birth) {
+		this.preferd_birth = preferd_birth;
 	}
 	
 }

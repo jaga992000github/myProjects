@@ -7,7 +7,7 @@ public class Coach {
 	private int total_rows;
 	private int total_col;
 	private int available_confirm_seats;
-	private boolean sleeper_facility;
+	private boolean is_sleeper;
 	private int[] seat_ratio;//to split seats
 	private HashMap<HashMap<String,Object>,Seat> coach_seats;//to map seats by row,col, and seat no
 	
@@ -21,7 +21,7 @@ public class Coach {
 		this.total_col=(int) coach_instances.get("total_col");
 		this.seat_ratio=(int[]) coach_instances.get("seat_ratio");
 		this.available_confirm_seats=(int) coach_instances.get("total_seats");
-		this.sleeper_facility=(boolean)coach_instances.get("sleeper_facility");
+		this.is_sleeper=(boolean)coach_instances.get("is_sleeper");
 		this.coach_seats= bindSeats();
 	}
 	private HashMap<HashMap<String, Object>, Seat> bindSeats(){
@@ -47,7 +47,7 @@ public class Coach {
 				seat_instances.put("RAC_replacable", false);
 				if(seat_ratio_index==0) {
 					seat_instances.put("seat_position",(char)seat_pos[j-1]);
-					if(this.sleeper_facility&&this.seat_ratio[seat_ratio_index]==1) {//to put second window upper in rac (sinngle side)
+					if(this.is_sleeper&&this.seat_ratio[seat_ratio_index]==1) {//to put second window upper in rac (sinngle side)
 						if(i%2==0) {
 							seat_instances.put("birth_position", birth_allocation.get('2'));}
 							else {
@@ -55,7 +55,7 @@ public class Coach {
 								seat_instances.put("RAC_replacable", true);
 							}
 					}
-					else if(this.sleeper_facility) {
+					else if(this.is_sleeper) {
 						seat_instances.put("birth_position", birth_allocation.get(seat_instances.get("seat_position")));
 					}
 					else {
@@ -70,7 +70,7 @@ public class Coach {
 				else if(seat_ratio_index==1) {
 					seat_instances.put("seat_position",seat_pos[second_side_seat_count-1]);
 					second_side_seat_count--;
-					if(this.sleeper_facility&&this.seat_ratio[seat_ratio_index]==1) {
+					if(this.is_sleeper&&this.seat_ratio[seat_ratio_index]==1) {
 						if(i%2==0) {
 						seat_instances.put("birth_position", birth_allocation.get('2'));}
 						else {
@@ -78,7 +78,7 @@ public class Coach {
 							seat_instances.put("RAC_replacable", true);
 						}
 					}
-					else if(this.sleeper_facility) {
+					else if(this.is_sleeper) {
 						seat_instances.put("birth_position", birth_allocation.get(seat_instances.get("seat_position")));
 					}
 					else {
@@ -184,16 +184,12 @@ public class Coach {
 		this.seat_ratio = seat_ratio;
 	}
 
-	
-
-	public boolean isSleeper_facility() {
-		return sleeper_facility;
+	public boolean isIs_sleeper() {
+		return is_sleeper;
 	}
-
-	public void setSleeper_facility(boolean sleeper_facility) {
-		this.sleeper_facility = sleeper_facility;
+	public void setIs_sleeper(boolean is_sleeper) {
+		this.is_sleeper = is_sleeper;
 	}
-
 	public int getAvailable_confirm_seats() {
 		return available_confirm_seats;
 	}

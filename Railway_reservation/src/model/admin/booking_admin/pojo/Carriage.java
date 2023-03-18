@@ -8,12 +8,15 @@ import java.util.Queue;
 import model.user.booking_user.pojo.Passenger;
 
 public class Carriage {
+	private String alpha_coach_id;
 	private String class_type;
+	private boolean is_ac;
+	private boolean is_sleeper;
 	private ArrayList<Coach> coach_list;
 	private Queue<Passenger> waiting_list ;
 	private int available_confirm_seats;
-	private int basic_fee;
-	private int cost_per_km;
+	private double basic_fee;
+	private double cost_per_km;
 
 	@Override
 	public String toString(){
@@ -30,9 +33,12 @@ public class Carriage {
 		
 	}
 	public Carriage (HashMap<String,Object> carriage_instances) {
+		this.alpha_coach_id=((String) carriage_instances.get("alpha_coach_id"));
 		this.class_type=(String) carriage_instances.get("class_type");
-		this.basic_fee=(int) carriage_instances.get("basic_fee");
-		this.cost_per_km=(int) carriage_instances.get("cost_per_km");
+		this.is_ac=(boolean) carriage_instances.get("is_ac");
+		this.is_sleeper=(boolean) carriage_instances.get("is_sleeper");
+		this.basic_fee=(double) carriage_instances.get("basic_fee");
+		this.cost_per_km=(double) carriage_instances.get("cost_per_km");
 		this.available_confirm_seats=0;
 		HashMap<String,Object>coach_instances=(HashMap<String, Object>) carriage_instances.get("coach_instances");
 		int coach_count=(int) carriage_instances.get("coach_count");
@@ -45,10 +51,10 @@ public class Carriage {
 	
 	private ArrayList<Coach> bindCoach(HashMap<String,Object>coach_instances,int coach_count){
 		ArrayList<Coach> coach_list=new ArrayList<Coach>();
-		String coach_id_alpha=(String)coach_instances.get("coach_id");
 		for(int i=1;i<=coach_count;i++) {
-			String coach_id_alpha_num=coach_id_alpha+"-"+i;
-			coach_instances.replace("coach_id", coach_id_alpha_num);
+			String alpha_num_coach_id=this.alpha_coach_id+"-"+i;
+			coach_instances.put("coach_id", alpha_num_coach_id);
+			coach_instances.put("is_sleeper", this.is_sleeper);
 			Coach coach=new Coach(coach_instances);
 			coach_list.add(coach);
 		}
@@ -77,22 +83,43 @@ public class Carriage {
 		this.waiting_list = waiting_list;
 	}
 	public int getAvailable_confirm_seats() {
+		for(Coach coach:coach_list) {
+			this.available_confirm_seats+=coach.getAvailable_confirm_seats();
+		}
 		return available_confirm_seats;
 	}
 	public void setAvailable_confirm_seats(int available_confirm_seats) {
 		this.available_confirm_seats = available_confirm_seats;
 	}
-	public int getBasic_fee() {
+	public double getBasic_fee() {
 		return basic_fee;
 	}
-	public void setBasic_fee(int basic_fee) {
+	public void setBasic_fee(double basic_fee) {
 		this.basic_fee = basic_fee;
 	}
-	public int getCost_per_km() {
+	public double getCost_per_km() {
 		return cost_per_km;
 	}
-	public void setCost_per_km(int cost_per_km) {
+	public void setCost_per_km(double cost_per_km) {
 		this.cost_per_km = cost_per_km;
+	}
+	public String getAlpha_coach_id() {
+		return alpha_coach_id;
+	}
+	public void setAlpha_coach_id(String alpha_coach_id) {
+		this.alpha_coach_id = alpha_coach_id;
+	}
+	public boolean isIs_ac() {
+		return is_ac;
+	}
+	public void setIs_ac(boolean is_ac) {
+		this.is_ac = is_ac;
+	}
+	public boolean isIs_sleeper() {
+		return is_sleeper;
+	}
+	public void setIs_sleeper(boolean is_sleeper) {
+		this.is_sleeper = is_sleeper;
 	}
 
 }

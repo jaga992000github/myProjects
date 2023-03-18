@@ -12,9 +12,9 @@ public class BookingInputs {
 	
 	public HashMap<String,Object> getUserDetails() {
 		HashMap<String,Object> user_instances=new HashMap<String,Object>();
-		System.out.println("");
+		System.out.println("Enter email");
 		String email=scan.next();
-		System.out.println("");
+		System.out.println("Enter password");
 		String password=scan.next();
 		user_instances.put("email", email);
 		user_instances.put("password",password);
@@ -38,8 +38,11 @@ public class BookingInputs {
 				int ph_no=scan.nextInt();
 				System.out.println("Enter Passenger Email");
 				String email=scan.next();
+				System.out.println("Enter Preferd Birth");
+				char preferd_birth=scan.next().charAt(0);
 				passenger_instances.put("ph_no",ph_no);
 				passenger_instances.put("email",email);
+				passenger_instances.put("preferd_birth",preferd_birth);
 			}
 			passenger_instances.put("gender",gender);
 			passenger_instances.put("name",name);

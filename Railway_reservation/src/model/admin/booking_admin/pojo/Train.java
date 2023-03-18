@@ -1,17 +1,21 @@
 package model.admin.booking_admin.pojo;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
 public class Train {
 	private String train_name;
 	private int train_no;
-	private float train_speed;
+	private double train_speed;
 	private LinkedList<Stop> train_route;
 	private HashMap<String,Carriage> carriages;
-	private LocalTime train_starting_time;
-	private LocalTime train_reaching_time;
+	private LocalDateTime train_starting_time;
+	private LocalDateTime train_reaching_time;
+	private Stop passenger_stop_starting_stop;
+	private Stop passenger_stop_reaching_stop;
 	
 	public String toString () {
 		String str="";
@@ -26,20 +30,34 @@ public class Train {
 		String str="";
 	    str="\n-Train Name:"+this.train_name
 				+ "\n-Train No:"+this.train_no
-				+ "\n-Train route:"
-				+ "\n-From "+this.train_route.getFirst().getName()+" To "+this.train_route.getLast().getName()
-				+"\n-Starting at-"+this.train_starting_time.toString()
-				+"\n-Reach at-"+this.train_reaching_time.toString()
+				+ "\n-Train route:\n"
+				+ "(From "+this.train_route.getFirst().getName()+" To "+this.train_route.getLast().getName()+")";
+				if(passenger_stop_starting_stop!=null
+						&&passenger_stop_reaching_stop!=null) {
+					str+="\n-starting at "+passenger_stop_starting_stop.getName()
+					+":\n"+formatTime(passenger_stop_starting_stop.getStarting_time())
+					+"\n-reach at "+passenger_stop_reaching_stop.getName()
+					+":\n"+formatTime(passenger_stop_reaching_stop.getReaching_time());
+				}
+				else {
+				str+="\n-Starting at-"+formatTime(this.train_starting_time)
+				+"\n-will Reach at-"+formatTime(this.train_reaching_time)
 				+ "\n";
+				}
 	    return str;
+	}
+	private String formatTime(LocalDateTime dateTime) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(" HH:mm:ss - dd/MM/yyyy");
+		String formated_time=dateTime.format(formatter);
+		return formated_time;
 	}
 	
 	public Train (HashMap<String,Object> train_instances) {
 		this.train_name=(String) train_instances.get("train_name");
 		this.train_no=(int) train_instances.get("train_no");
-		this.train_speed=(float) train_instances.get("train_speed");
+		this.train_speed=(double) train_instances.get("train_speed");
 		ArrayList<HashMap<String,Object>>stop_instances_list=(ArrayList<HashMap<String, Object>>) train_instances.get("stop_instances_list");
-		this.train_starting_time=(LocalTime) train_instances.get("train_starting_time");
+		this.train_starting_time=(LocalDateTime) train_instances.get("train_starting_time");
 		this.train_route=bindStops(stop_instances_list);
 		this.train_reaching_time=train_route.getLast().getReaching_time();
 		this.carriages=bindCarriage((ArrayList<HashMap<String, Object>>) train_instances.get("carriage_list"));
@@ -74,7 +92,7 @@ public class Train {
 			train_route.add(stop);
 			index++;
 		}
-		System.out.println(train_route);
+		//System.out.println(train_route);
 		return train_route;
 	}
 	
@@ -90,19 +108,30 @@ public class Train {
 		return carriages;
 	}
 	
-
 	
-	public LocalTime getTrain_starting_time() {
+	public Stop getPassenger_stop_starting_stop() {
+		return passenger_stop_starting_stop;
+	}
+	public void setPassenger_stop_starting_stop(Stop passenger_stop_starting_stop) {
+		this.passenger_stop_starting_stop = passenger_stop_starting_stop;
+	}
+	public Stop getPassenger_stop_reaching_stop() {
+		return passenger_stop_reaching_stop;
+	}
+	public void setPassenger_stop_reaching_stop(Stop passenger_stop_reaching_stop) {
+		this.passenger_stop_reaching_stop = passenger_stop_reaching_stop;
+	}
+	public LocalDateTime getTrain_starting_time() {
 		return train_starting_time;
 	}
-	public void setTrain_starting_time(LocalTime train_starting_time) {
+	public void setTrain_starting_time(LocalDateTime train_starting_time) {
 		this.train_starting_time = train_starting_time;
 	}
 	
-	public LocalTime getTrain_reaching_time() {
+	public LocalDateTime getTrain_reaching_time() {
 		return train_reaching_time;
 	}
-	public void setTrain_reaching_time(LocalTime train_reaching_time) {
+	public void setTrain_reaching_time(LocalDateTime train_reaching_time) {
 		this.train_reaching_time = train_reaching_time;
 	}
 	public HashMap<String, Carriage> getCarriages() {
@@ -125,11 +154,11 @@ public class Train {
 	public void setTrain_no(int train_no) {
 		this.train_no = train_no;
 	}
-	public float getTrain_speed() {
+	public double getTrain_speed() {
 		return train_speed;
 	}
 
-	public void setTrain_speed(float train_speed) {
+	public void setTrain_speed(double train_speed) {
 		this.train_speed = train_speed;
 	}
 	public LinkedList<Stop> getTrain_route() {

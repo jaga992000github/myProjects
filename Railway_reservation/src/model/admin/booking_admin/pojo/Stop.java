@@ -1,28 +1,27 @@
 package model.admin.booking_admin.pojo;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
 
 public class Stop {
 	private String name;
-	private int km_from_start;
+	private double km_from_start;
 	private long waiting_time;
-	private LocalTime starting_time;
-	private LocalTime reaching_time;
+	private LocalDateTime starting_time;
+	private LocalDateTime reaching_time;
 	private Stop previous_stop;
 	private Stop next_stop;
 	
 	public Stop(HashMap<String,Object> stop_instances) {
 		super();
 		this.name = (String) stop_instances.get("name");
-		this.km_from_start = (int) stop_instances.get("km_from_start");
+		this.km_from_start = (double) stop_instances.get("km_from_start");
 		this.waiting_time = (long) stop_instances.get("waiting_time");
 	}
 	
-	public void setTiming(float train_speed) {
+	public void setTiming(double train_speed) {
 		if(previous_stop!=null) {
-			//this.starting_time=this.getPrevious_stop().reaching_time.plusMinutes(this.getPrevious_stop().getWaiting_time());
-			//this.reaching_time=this.starting_time.plusMinutes(calculateTravelMinutes(train_speed));
 			this.reaching_time=this.getPrevious_stop().starting_time.plusSeconds(calculateTravelSeconds(train_speed));
 			this.starting_time=this.reaching_time.plusMinutes(this.waiting_time);
 		}
@@ -48,19 +47,19 @@ public class Stop {
 		  }
 		return str;
 	}
-	private float calcuateKmPerMinute(float train_speed) {
-		float km_per_min=(train_speed/60);
+	private double calcuateKmPerMinute(double train_speed) {
+		double km_per_min=(train_speed/60);
 		return km_per_min;
 	}
 	
-	private long calculateTravelSeconds(float train_speed){
-		float accurate_secs;
-		int current_stop_km=this.km_from_start;
-		int previous_stop_km=0;
+	private long calculateTravelSeconds(double train_speed){
+		double accurate_secs;
+		double current_stop_km=this.km_from_start;
+		double previous_stop_km=0;
 		if(this.getPrevious_stop()!=null) {
 			previous_stop_km=this.getPrevious_stop().getKm_from_start();
 		}
-		int km_between_stops=current_stop_km-previous_stop_km;
+		double km_between_stops=current_stop_km-previous_stop_km;
 		accurate_secs=calcuateKmPerMinute(train_speed)*km_between_stops;
 		long secs=Math.round(accurate_secs*60);
 		//System.out.println(accurate_secs);
@@ -74,10 +73,10 @@ public class Stop {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getKm_from_start() {
+	public double getKm_from_start() {
 		return km_from_start;
 	}
-	public void setKm_from_start(int km_from_start) {
+	public void setKm_from_start(double km_from_start) {
 		this.km_from_start = km_from_start;
 	}
 	public long getWaiting_time() {
@@ -86,16 +85,16 @@ public class Stop {
 	public void setWaiting_time(long waiting_time) {
 		this.waiting_time = waiting_time;
 	}
-	public LocalTime getStarting_time() {
+	public LocalDateTime getStarting_time() {
 		return starting_time;
 	}
-	public void setStarting_time(LocalTime starting_time) {
+	public void setStarting_time(LocalDateTime starting_time) {
 		this.starting_time = starting_time;
 	}
-	public LocalTime getReaching_time() {
+	public LocalDateTime getReaching_time() {
 		return reaching_time;
 	}
-	public void setReaching_time(LocalTime reaching_time) {
+	public void setReaching_time(LocalDateTime reaching_time) {
 		this.reaching_time = reaching_time;
 	}
 	public Stop getPrevious_stop() {

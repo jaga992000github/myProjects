@@ -15,9 +15,9 @@ public class Ticket {
 	private String coach_id;
 	private String class_type;
 	private ArrayList<Passenger> passengers_details;
-	private int basic_fee;
-	private int cost_per_km;
-	private int total_cost;
+	private double basic_fee;
+	private double cost_per_km;
+	private double total_cost;
 	
 	public Ticket(HashMap<String,Object>ticket_instances){
 		this.pnr_no=(last_pnr_no+1);
@@ -62,20 +62,20 @@ public class Ticket {
 	}
 	
 
-	private int getTotalKm() {
-		int from_km_from_start=this.from_stop.getKm_from_start();
-		int to_km_from_start=this.to_stop.getKm_from_start();
-		int total_km=to_km_from_start-from_km_from_start;
+	private double getTotalKm() {
+		double from_km_from_start=this.from_stop.getKm_from_start();
+		double to_km_from_start=this.to_stop.getKm_from_start();
+		double total_km=to_km_from_start-from_km_from_start;
 		return total_km;
 	}
 	
-	private int getStopToStopCost() {
-		int total_km=getTotalKm();
-		int cost=(total_km*this.cost_per_km)+this.basic_fee;
+	private double getStopToStopCost() {
+		double total_km=getTotalKm();
+		double cost=(total_km*this.cost_per_km)+this.basic_fee;
 		return cost;
 	}
-	private int getTicketCost() {
-		int total_cost=0;
+	private double getTicketCost() {
+		double total_cost=0;
 		for(Passenger passenger:this.passengers_details) {
 			if(passenger.getAge()>5) {
 				total_cost+=getStopToStopCost();
@@ -83,49 +83,115 @@ public class Ticket {
 		}
 		return total_cost;
 	}
-	
-	public synchronized int getPnr_no() {
+
+
+	public static int getLast_pnr_no() {
+		return last_pnr_no;
+	}
+
+
+	public static void setLast_pnr_no(int last_pnr_no) {
+		Ticket.last_pnr_no = last_pnr_no;
+	}
+
+
+	public int getPnr_no() {
 		return pnr_no;
 	}
-	public synchronized void setPnr_no(int pnr_no) {
+
+
+	public void setPnr_no(int pnr_no) {
 		this.pnr_no = pnr_no;
 	}
-	
-	public synchronized Stop getFrom_stop() {
+
+
+	public Train getTrain() {
+		return train;
+	}
+
+
+	public void setTrain(Train train) {
+		this.train = train;
+	}
+
+
+	public Stop getFrom_stop() {
 		return from_stop;
 	}
-	public synchronized void setFrom_stop(Stop from_stop) {
+
+
+	public void setFrom_stop(Stop from_stop) {
 		this.from_stop = from_stop;
 	}
-	public synchronized Stop getTo_stop() {
+
+
+	public Stop getTo_stop() {
 		return to_stop;
 	}
-	public synchronized void setTo_stop(Stop to_stop) {
+
+
+	public void setTo_stop(Stop to_stop) {
 		this.to_stop = to_stop;
 	}
-	public synchronized String getCoach_id() {
+
+
+	public String getCoach_id() {
 		return coach_id;
 	}
-	public synchronized void setCoach_id(String coach_id) {
+
+
+	public void setCoach_id(String coach_id) {
 		this.coach_id = coach_id;
 	}
-	public synchronized String getClass_type() {
+
+
+	public String getClass_type() {
 		return class_type;
 	}
-	public synchronized void setClass_type(String class_type) {
+
+
+	public void setClass_type(String class_type) {
 		this.class_type = class_type;
 	}
-	public synchronized ArrayList<Passenger> getPassengers_details() {
+
+
+	public ArrayList<Passenger> getPassengers_details() {
 		return passengers_details;
 	}
-	public synchronized void setPassengers_details(ArrayList<Passenger> passengers_details) {
+
+
+	public void setPassengers_details(ArrayList<Passenger> passengers_details) {
 		this.passengers_details = passengers_details;
 	}
-	public synchronized int getTotal_cost() {
+
+
+	public double getBasic_fee() {
+		return basic_fee;
+	}
+
+
+	public void setBasic_fee(double basic_fee) {
+		this.basic_fee = basic_fee;
+	}
+
+
+	public double getCost_per_km() {
+		return cost_per_km;
+	}
+
+
+	public void setCost_per_km(double cost_per_km) {
+		this.cost_per_km = cost_per_km;
+	}
+	
+	public double getTotal_cost() {
 		return total_cost;
 	}
-	public synchronized void setTotal_cost(int total_cost) {
+
+
+	public void setTotal_cost(double total_cost) {
 		this.total_cost = total_cost;
 	}
+	
 	
 }
