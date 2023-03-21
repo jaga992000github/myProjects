@@ -15,12 +15,7 @@ public class AvailableTrains {
 
 	public void addTrain(HashMap<String,Object> train_instances) {
 		Train train=new Train(train_instances);
-		LinkedList<Stop> train_route=train.getTrain_route();
-		HashMap<String,Stop>search_route=new HashMap<String,Stop>();
-		for(Stop stop:train_route) {
-			String stop_name=stop.getName();
-			search_route.put(stop_name, stop);
-		}
+		HashMap<String,Stop>search_route=train.getStop_map();
 		AvailableTrains.available_trains.put(search_route, train);
 		AvailableTrains.search_route_list.add(search_route);
 	}
@@ -32,8 +27,7 @@ public class AvailableTrains {
 			Stop to_stop=search_route.get(to_stop_name);
 			if(from_stop!=null&&to_stop!=null&&from_stop.getKm_from_start() < to_stop.getKm_from_start()){
 				Train train =available_trains.get(search_route);
-				train.setPassenger_stop_starting_stop(from_stop);
-				train.setPassenger_stop_reaching_stop(to_stop);
+				train.setPassengerRoute(from_stop, to_stop);
 				route_matched_trains.add(train);
 			}
 		}

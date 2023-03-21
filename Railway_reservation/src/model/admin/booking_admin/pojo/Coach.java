@@ -6,23 +6,26 @@ public class Coach {
 	private int total_seats;
 	private int total_rows;
 	private int total_col;
-	private int available_confirm_seats;
 	private boolean is_sleeper;
 	private int[] seat_ratio;//to split seats
 	private HashMap<HashMap<String,Object>,Seat> coach_seats;//to map seats by row,col, and seat no
+	private Stop from_stop;
+	private Stop to_stop;
+	private Queue<Seat> available_seats;
+	private int available_confirm_seats_count;
 	
 	public Coach() {
 		
 	}
 	public Coach (HashMap<String,Object> coach_instances) {
 		this.coach_id=(String) coach_instances.get("coach_id");
-		this.total_seats=(int) coach_instances.get("total_seats");
 		this.total_rows=(int) coach_instances.get("total_rows");
 		this.total_col=(int) coach_instances.get("total_col");
+		this.total_seats=total_col*total_rows;
 		this.seat_ratio=(int[]) coach_instances.get("seat_ratio");
-		this.available_confirm_seats=(int) coach_instances.get("total_seats");
 		this.is_sleeper=(boolean)coach_instances.get("is_sleeper");
 		this.coach_seats= bindSeats();
+		this.available_seats=refreshAvailable_seats();
 	}
 	private HashMap<HashMap<String, Object>, Seat> bindSeats(){
 		int row=0,col=0;
@@ -44,7 +47,7 @@ public class Coach {
 				HashMap<String, Object> seat_instances=new HashMap<String, Object>();
 				col=j;
 				seat_instances.put("seat_no", seat_no);
-				seat_instances.put("RAC_replacable", false);
+				seat_instances.put("is_RAC_replacable", false);
 				if(seat_ratio_index==0) {
 					seat_instances.put("seat_position",(char)seat_pos[j-1]);
 					if(this.is_sleeper&&this.seat_ratio[seat_ratio_index]==1) {//to put second window upper in rac (sinngle side)
@@ -52,7 +55,7 @@ public class Coach {
 							seat_instances.put("birth_position", birth_allocation.get('2'));}
 							else {
 								seat_instances.put("birth_position", birth_allocation.get(seat_instances.get("seat_position")));
-								seat_instances.put("RAC_replacable", true);
+								seat_instances.put("is_RAC_replacable", true);
 							}
 					}
 					else if(this.is_sleeper) {
@@ -75,7 +78,7 @@ public class Coach {
 						seat_instances.put("birth_position", birth_allocation.get('2'));}
 						else {
 							seat_instances.put("birth_position", birth_allocation.get(seat_instances.get("seat_position")));
-							seat_instances.put("RAC_replacable", true);
+							seat_instances.put("is_RAC_replacable", true);
 						}
 					}
 					else if(this.is_sleeper) {
@@ -88,13 +91,13 @@ public class Coach {
 //+++++++++++++++++//System.out.println(seat_instances.get("seat_position")+" seat no"+ seat_no+" birth "+seat_instances.get("birth_position")+" right RAC "+seat_instances.get("RAC_replacable"));//000000000000000000000000000000000000
 				}
 				seat_instances.put("booked_status",false);
-				seat_instances.put("booked_as","vacant");
 				seat=new Seat(seat_instances);
 				HashMap<String,Object> seat_map=new HashMap<String,Object>();
 				seat_map.put("row",row);
 				seat_map.put("col",col);
 				seat_map.put("seat_no", seat_no);
-				seat=coach_seats.put(seat_map, seat);
+				coach_seats.put(seat_map, seat);
+				//System.out.println(seat);
 				seat_no++;
 			}
 		}	
@@ -109,7 +112,7 @@ public class Coach {
 		int seat_no=1;
 		
 		
-		String str="\nCoach: "+this.coach_id;
+		String str="\nCoach: "+this.coach_id+"("+getAvailable_confirm_seats_count()+")";
 		for(int i=1;i<=total_rows;i++) {
 			str+="\n";
 			row=i;
@@ -125,7 +128,7 @@ public class Coach {
 				seat_graph.put("col",col);
 				seat=coach_seats.get(seat_graph);
 //---------------//System.out.println(seat);//0000000000000000000000000000
-				if(seat.isBooked_status()&&seat.getBooked_as().equals("confirm")) {
+				if(seat.is_booked()&&seat.getBooked_as().equals("confirm")) {
 					str+=" ["+seat.getSeat_no()+"] ";
 				}
 				else if(seat.getBooked_as().equals("RAC")) {
@@ -142,6 +145,71 @@ public class Coach {
 		}
 		return str;
 	}
+	
+	
+	public Queue<Seat> refreshAvailable_seats() {
+		Queue<Seat>available_seats=new LinkedList<Seat>();
+		int row,col;
+		Seat seat;
+		int seat_no=1;
+		for(int i=1;i<=total_rows;i++) {
+			row=i;
+			for(int j=1;j<=total_col;j++){
+				col=j;
+				HashMap<String,Object> seat_graph=new HashMap<String,Object>();
+				seat_graph.put("seat_no",seat_no);
+				seat_graph.put("row",row);
+				seat_graph.put("col",col);
+				seat=coach_seats.get(seat_graph);
+				seat.setIs_booked(!checkSeatAvailabilityInRoute(seat));
+				if(!seat.is_booked()) {
+					available_seats.add(seat);
+					//System.out.println(seat_no);
+				}
+				else {
+					seat.setBooked_as("confirm");
+				}
+				seat_no++;
+			}
+		}this.available_confirm_seats_count=available_seats.size();
+		this.available_seats=available_seats;
+		return available_seats;
+	}
+	
+	
+	private boolean checkSeatAvailabilityInRoute(Seat seat) {
+		if(seat.getEngaging_stop()==null) {
+			return true;
+		}
+		if(from_stop==null||to_stop==null) {
+			//System.out.println("1_true");
+			return true;
+		}
+		double from_stop_km=from_stop.getKm_from_start();
+		double to_stop_km=to_stop.getKm_from_start();
+		double eng_stop_km=seat.getEngaging_stop().getKm_from_start();
+		double vac_stop_km=seat.getVcant_stop().getKm_from_start();
+		if(from_stop_km<eng_stop_km
+				&&to_stop_km<=eng_stop_km) {
+			//System.out.println("2_true");
+			return true;
+		}
+		else if(from_stop_km>=vac_stop_km
+				&&to_stop_km>vac_stop_km) {
+			//System.out.println("3_true");
+			return true;
+		}//System.out.println("fase");
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public String getCoach_id() {
 		return coach_id;
@@ -190,12 +258,17 @@ public class Coach {
 	public void setIs_sleeper(boolean is_sleeper) {
 		this.is_sleeper = is_sleeper;
 	}
-	public int getAvailable_confirm_seats() {
-		return available_confirm_seats;
+	public int getAvailable_confirm_seats_count() {
+		return  this.available_confirm_seats_count;
 	}
-
-	public void setAvailable_confirm_seats(int available_confirm_seats) {
-		this.available_confirm_seats = available_confirm_seats;
+	public Queue<Seat> getAvailable_seats(){
+		return this.available_seats;
 	}
 	
+	
+	public void setPassengerRoute(Stop from_stop,Stop to_stop) {
+		//System.out.println(from_stop.getName());
+		this.from_stop = from_stop;
+		this.to_stop = to_stop;
+	}
 }

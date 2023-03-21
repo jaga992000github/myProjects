@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.Map.Entry;
 
 
 public class Train {
@@ -11,11 +12,12 @@ public class Train {
 	private int train_no;
 	private double train_speed;
 	private LinkedList<Stop> train_route;
+	private HashMap<String,Stop> stop_map;
 	private HashMap<String,Carriage> carriages;
 	private LocalDateTime train_starting_time;
 	private LocalDateTime train_reaching_time;
-	private Stop passenger_stop_starting_stop;
-	private Stop passenger_stop_reaching_stop;
+	private Stop passenger_starting_stop;
+	private Stop passenger_reaching_stop;
 	
 	public String toString () {
 		String str="";
@@ -32,12 +34,12 @@ public class Train {
 				+ "\n-Train No:"+this.train_no
 				+ "\n-Train route:\n"
 				+ "(From "+this.train_route.getFirst().getName()+" To "+this.train_route.getLast().getName()+")";
-				if(passenger_stop_starting_stop!=null
-						&&passenger_stop_reaching_stop!=null) {
-					str+="\n-starting at "+passenger_stop_starting_stop.getName()
-					+":\n"+formatTime(passenger_stop_starting_stop.getStarting_time())
-					+"\n-reach at "+passenger_stop_reaching_stop.getName()
-					+":\n"+formatTime(passenger_stop_reaching_stop.getReaching_time());
+				if(passenger_starting_stop!=null
+						&&passenger_reaching_stop!=null) {
+					str+="\n-starting at "+passenger_starting_stop.getName()
+					+":\n"+formatTime(passenger_starting_stop.getStarting_time())
+					+"\n-reach at "+passenger_reaching_stop.getName()
+					+":\n"+formatTime(passenger_reaching_stop.getReaching_time());
 				}
 				else {
 				str+="\n-Starting at-"+formatTime(this.train_starting_time)
@@ -51,6 +53,9 @@ public class Train {
 		String formated_time=dateTime.format(formatter);
 		return formated_time;
 	}
+	public Train() {
+		
+	}
 	
 	public Train (HashMap<String,Object> train_instances) {
 		this.train_name=(String) train_instances.get("train_name");
@@ -61,6 +66,10 @@ public class Train {
 		this.train_route=bindStops(stop_instances_list);
 		this.train_reaching_time=train_route.getLast().getReaching_time();
 		this.carriages=bindCarriage((ArrayList<HashMap<String, Object>>) train_instances.get("carriage_list"));
+		this.stop_map=new HashMap<String,Stop>();
+		for(Stop stop:this.train_route) {
+			this.stop_map.put(stop.getName(), stop);
+		}
 	}
 	
 	private LinkedList<Stop> bindStops(ArrayList<HashMap<String,Object>>stop_instances_list){
@@ -97,30 +106,24 @@ public class Train {
 	}
 	
 	
+	public void setPassengerRoute(Stop from_stop,Stop to_stop) {
+		this.passenger_starting_stop= from_stop;
+		this.passenger_reaching_stop = to_stop;
+		for(Map.Entry<String, Carriage> entry:carriages.entrySet()) {
+			Carriage carriage=entry.getValue();
+			carriage.setPassengerRoute(from_stop, to_stop);
+		}
+	}
 	
 	private HashMap<String,Carriage> bindCarriage(ArrayList<HashMap<String,Object>>carriage_list){
 		HashMap<String,Carriage> carriages=new HashMap<String,Carriage>();
 		for(HashMap<String,Object> carriage_instances:carriage_list) {
-			HashMap<String,Object>coach_instances=(HashMap<String, Object>) carriage_instances.get("coach_instances");
 			Carriage carriage=new Carriage(carriage_instances);
 			carriages.put(carriage.getClass_type(), carriage);
 		}
 		return carriages;
 	}
 	
-	
-	public Stop getPassenger_stop_starting_stop() {
-		return passenger_stop_starting_stop;
-	}
-	public void setPassenger_stop_starting_stop(Stop passenger_stop_starting_stop) {
-		this.passenger_stop_starting_stop = passenger_stop_starting_stop;
-	}
-	public Stop getPassenger_stop_reaching_stop() {
-		return passenger_stop_reaching_stop;
-	}
-	public void setPassenger_stop_reaching_stop(Stop passenger_stop_reaching_stop) {
-		this.passenger_stop_reaching_stop = passenger_stop_reaching_stop;
-	}
 	public LocalDateTime getTrain_starting_time() {
 		return train_starting_time;
 	}
@@ -166,6 +169,9 @@ public class Train {
 	}
 	public void setTrain_route(LinkedList<Stop> train_route) {
 		this.train_route = train_route;
+	}
+	public HashMap<String,Stop> getStop_map() {
+		return stop_map;
 	}
 
 }

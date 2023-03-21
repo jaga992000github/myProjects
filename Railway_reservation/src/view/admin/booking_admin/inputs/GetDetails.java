@@ -101,13 +101,11 @@ public class GetDetails {
 	 		int total_col=0;
 	 		System.out.println("Enter total row ");
 	 		int total_rows=nv.validateIntegerInput();
-	 		int total_seats=total_col*total_rows;
 	 		
 	 		HashMap<String,Object> coach_instances=new HashMap<String,Object>();
  			coach_instances.put("seat_ratio", seat_ratio);
  			coach_instances.put("total_col", total_col);
  			coach_instances.put("total_rows", total_rows);
- 			coach_instances.put("total_seats", total_seats);
  		
 		return coach_instances;
 	}

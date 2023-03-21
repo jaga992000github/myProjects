@@ -27,13 +27,11 @@ public class CoachInstancesTemplates implements TemplateInterface{
  		int[] seat_ratio={1,3};
  		int total_col=seat_ratio[0]+seat_ratio[1];
  		int total_rows=24;
- 		int total_seats=total_col*total_rows;
  		
  		HashMap<String,Object> coach_instances=new HashMap<String,Object>();
 			coach_instances.put("seat_ratio", seat_ratio);
 			coach_instances.put("total_col", total_col);
 			coach_instances.put("total_rows", total_rows);
-			coach_instances.put("total_seats", total_seats);
 				
 		return coach_instances;
 	}
@@ -43,13 +41,11 @@ public class CoachInstancesTemplates implements TemplateInterface{
  		int[] seat_ratio={1,3};
  		int total_col=seat_ratio[0]+seat_ratio[1];
  		int total_rows=18;
- 		int total_seats=total_col*total_rows;
  		
  		HashMap<String,Object> coach_instances=new HashMap<String,Object>();
 			coach_instances.put("seat_ratio", seat_ratio);
 			coach_instances.put("total_col", total_col);
 			coach_instances.put("total_rows", total_rows);
-			coach_instances.put("total_seats", total_seats);
 				
 		return coach_instances;
 	}
@@ -57,14 +53,12 @@ public class CoachInstancesTemplates implements TemplateInterface{
 	private HashMap<String,Object> get3_tyre_SleeperCoachTemplate(){
  		int[] seat_ratio={1,3};
  		int total_col=seat_ratio[0]+seat_ratio[1];
- 		int total_rows=18;
- 		int total_seats=total_col*total_rows;
+ 		int total_rows=4;//18
  		
  		HashMap<String,Object> coach_instances=new HashMap<String,Object>();
 			coach_instances.put("seat_ratio", seat_ratio);
 			coach_instances.put("total_col", total_col);
 			coach_instances.put("total_rows", total_rows);
-			coach_instances.put("total_seats", total_seats);
 				
 		return coach_instances;
 	}
@@ -73,13 +67,11 @@ public class CoachInstancesTemplates implements TemplateInterface{
  		int[] seat_ratio={1,2};
  		int total_col=seat_ratio[0]+seat_ratio[1];
  		int total_rows=16;
- 		int total_seats=total_col*total_rows;
  		
  		HashMap<String,Object> coach_instances=new HashMap<String,Object>();
 			coach_instances.put("seat_ratio", seat_ratio);
 			coach_instances.put("total_col", total_col);
 			coach_instances.put("total_rows", total_rows);
-			coach_instances.put("total_seats", total_seats);
 				
 		return coach_instances;
 	}
@@ -88,13 +80,11 @@ public class CoachInstancesTemplates implements TemplateInterface{
  		int[] seat_ratio={1,1};
  		int total_col=seat_ratio[0]+seat_ratio[1];
  		int total_rows=12;
- 		int total_seats=total_col*total_rows;
  		
  		HashMap<String,Object> coach_instances=new HashMap<String,Object>();
 			coach_instances.put("seat_ratio", seat_ratio);
 			coach_instances.put("total_col", total_col);
 			coach_instances.put("total_rows", total_rows);
-			coach_instances.put("total_seats", total_seats);
 				
 		return coach_instances;
 	}

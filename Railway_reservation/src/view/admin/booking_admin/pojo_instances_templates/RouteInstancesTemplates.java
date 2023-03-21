@@ -37,13 +37,13 @@ public class RouteInstancesTemplates implements TemplateInterface {
 		stop_instances_list.add(stop_instances2);
 		
 		HashMap<String,Object> stop_instances3=new HashMap<String,Object>();
-		stop_instances3.put("name","tiruppur");
+		stop_instances3.put("name","erode");
 		stop_instances3.put("km_from_start",14.0);
 		stop_instances3.put("waiting_time",(long)5);
 		stop_instances_list.add(stop_instances3);
 		
 		HashMap<String,Object> stop_instances4=new HashMap<String,Object>();
-		stop_instances4.put("name","erode");
+		stop_instances4.put("name","tiruppur");
 		stop_instances4.put("km_from_start",27.0);
 		stop_instances4.put("waiting_time",(long)5);
 		stop_instances_list.add(stop_instances4);

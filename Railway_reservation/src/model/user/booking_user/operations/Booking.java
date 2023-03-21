@@ -36,7 +36,7 @@ public class Booking {
 	}
 	
 	private boolean isSeatBookable(Seat seat,Stop from_stop) {
-		if(seat.isBooked_status()&&seat.getLast_stop_km_from_start())
+		if(seat.is_booked()&&seat.getLast_stop_km_from_start())
 	}
 	
 }

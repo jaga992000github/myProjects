@@ -17,6 +17,8 @@ public class Carriage {
 	private int available_confirm_seats;
 	private double basic_fee;
 	private double cost_per_km;
+	private Stop passenger_starting_stop;
+	private Stop passenger_reaching_stop;
 
 	@Override
 	public String toString(){
@@ -40,14 +42,25 @@ public class Carriage {
 		this.basic_fee=(double) carriage_instances.get("basic_fee");
 		this.cost_per_km=(double) carriage_instances.get("cost_per_km");
 		this.available_confirm_seats=0;
+		this.passenger_starting_stop=(Stop) carriage_instances.get("passenger_starting_stop");
+		this.passenger_reaching_stop=(Stop) carriage_instances.get("passenger_reaching_stop");
 		HashMap<String,Object>coach_instances=(HashMap<String, Object>) carriage_instances.get("coach_instances");
 		int coach_count=(int) carriage_instances.get("coach_count");
 		this.coach_list=this.bindCoach(coach_instances, coach_count);
 		for(Coach coach:coach_list) {
-			this.available_confirm_seats+=coach.getAvailable_confirm_seats();
+			this.available_confirm_seats+=coach.getAvailable_confirm_seats_count();
 		}
 		this.waiting_list=new LinkedList<Passenger>();
 	}
+	
+	public void setPassengerRoute(Stop from_stop,Stop to_stop) {
+		this.passenger_starting_stop= from_stop;
+		this.passenger_reaching_stop = to_stop;
+		for(Coach coach :coach_list) {
+			coach.setPassengerRoute(from_stop, to_stop);
+		}
+	}
+	
 	
 	private ArrayList<Coach> bindCoach(HashMap<String,Object>coach_instances,int coach_count){
 		ArrayList<Coach> coach_list=new ArrayList<Coach>();
@@ -84,7 +97,7 @@ public class Carriage {
 	}
 	public int getAvailable_confirm_seats() {
 		for(Coach coach:coach_list) {
-			this.available_confirm_seats+=coach.getAvailable_confirm_seats();
+			this.available_confirm_seats+=coach.getAvailable_confirm_seats_count();
 		}
 		return available_confirm_seats;
 	}

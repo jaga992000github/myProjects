@@ -16,8 +16,8 @@ public class TrainInstancesTemplates implements TemplateInterface{
 	@Override
 	public void initiaze() {
 		addNewTrainTemplate(getTrain_1_instances());
-		addNewTrainTemplate(getTrain_2_instances());
-		addNewTrainTemplate(getTrain_3_instances());
+//		addNewTrainTemplate(getTrain_2_instances());
+//		addNewTrainTemplate(getTrain_3_instances());
 	}
 	
 	public void addNewTrainTemplate(HashMap<String,Object> train_instances) {
@@ -47,17 +47,17 @@ public class TrainInstancesTemplates implements TemplateInterface{
 		
 		ArrayList<HashMap<String,Object>> carriage_list=new ArrayList<HashMap<String,Object>>();
 		HashMap<String,Object> s_carriage=avaiable_carriage_instances.get("sleeper");
-		HashMap<String,Object> a3_carriage=avaiable_carriage_instances.get("3tyre_AC_sleeper");
-		HashMap<String,Object> a2_carriage=avaiable_carriage_instances.get("2tyre_AC_sleeper");
-		HashMap<String,Object> a1_carriage=avaiable_carriage_instances.get("1tyre_AC_sleeper");
-		s_carriage.put("coach_count",4);
-		a3_carriage.put("coach_count",2);
-		a2_carriage.put("coach_count",2);
-		a1_carriage.put("coach_count",2);
+//		HashMap<String,Object> a3_carriage=avaiable_carriage_instances.get("3tyre_AC_sleeper");
+//		HashMap<String,Object> a2_carriage=avaiable_carriage_instances.get("2tyre_AC_sleeper");
+//		HashMap<String,Object> a1_carriage=avaiable_carriage_instances.get("1tyre_AC_sleeper");
+		s_carriage.put("coach_count",1);
+//		a3_carriage.put("coach_count",2);
+//		a2_carriage.put("coach_count",2);
+//		a1_carriage.put("coach_count",2);
 		carriage_list.add(s_carriage);
-		carriage_list.add(a3_carriage);
-		carriage_list.add(a2_carriage);
-		carriage_list.add(a1_carriage);
+//		carriage_list.add(a3_carriage);
+//		carriage_list.add(a2_carriage);
+//		carriage_list.add(a1_carriage);
 	
 		train_instances.put("train_name",  train_name);
 		train_instances.put("train_no",  train_no);

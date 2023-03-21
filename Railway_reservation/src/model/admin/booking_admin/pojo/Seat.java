@@ -6,10 +6,11 @@ public class Seat {
 	private int seat_no;
 	private char seat_position;
 	private char birth_position;
-	private boolean booked_status;
+	private boolean is_RAC_replacable;
+	private Stop engaging_stop;
+	private Stop vcant_stop;
+	private boolean is_booked;
 	private String booked_as;
-	private boolean RAC_replacable;
-	private int last_stop_km_from_start;
 	
 	
 	@Override
@@ -27,9 +28,11 @@ public class Seat {
 		this.seat_no=(int) seat_instances.get("seat_no");
 		this.seat_position=(char) seat_instances.get("seat_position");
 		this.birth_position=(char) seat_instances.get("birth_position");
-		this.booked_status=(boolean) seat_instances.get("booked_status");
-		this.booked_as=(String) seat_instances.get("booked_as");
-		this.RAC_replacable=(boolean) seat_instances.get("RAC_replacable");
+		this.is_RAC_replacable=(boolean) seat_instances.get("is_RAC_replacable");
+		this.booked_as="vacant";
+		this.engaging_stop=null;
+		this.vcant_stop=null;
+		this.is_booked=false;
 	}
 	public int getSeat_no() {
 		return seat_no;
@@ -49,33 +52,43 @@ public class Seat {
 	public void setBirth_position(char birth_position) {
 		this.birth_position = birth_position;
 	}
-	public boolean isBooked_status() {
-		return booked_status;
+	public boolean isRAC_replacable() {
+		return is_RAC_replacable;
 	}
-	public void setBooked_status(boolean booked_status) {
-		this.booked_status = booked_status;
+
+	public void setis_RAC_replacable(boolean is_RAC_replacable) {
+		this.is_RAC_replacable = is_RAC_replacable;
+	}
+	public Stop getEngaging_stop() {
+		return engaging_stop;
+	}
+	public void setEngaging_stop(Stop engaging_stop) {
+		if(this.engaging_stop ==null||
+				engaging_stop.getKm_from_start() < this.engaging_stop.getKm_from_start()) {
+		this.engaging_stop = engaging_stop;}
+	}
+	public Stop getVcant_stop() {
+		return vcant_stop;
+	}
+	public void setVcant_stop(Stop vcant_stop) {
+		if(this.vcant_stop==null||
+				vcant_stop.getKm_from_start()>this.vcant_stop.getKm_from_start()) {
+			this.vcant_stop = vcant_stop;
+		}
+	}
+	public boolean is_booked() {
+		return is_booked;
+	}
+	public void setIs_booked(boolean is_booked) {
+		this.is_booked = is_booked;
 	}
 	public String getBooked_as() {
 		return booked_as;
 	}
-
 	public void setBooked_as(String booked_as) {
 		this.booked_as = booked_as;
 	}
-
-	public boolean isRAC_replacable() {
-		return RAC_replacable;
-	}
-
-	public void setRAC_replacable(boolean rAC_replacable) {
-		RAC_replacable = rAC_replacable;
-	}
-	public int getLast_stop_km_from_start() {
-		return last_stop_km_from_start;
-	}
-	public void setLast_stop_km_from_start(int last_stop_km_from_start) {
-		this.last_stop_km_from_start = last_stop_km_from_start;
-	}
+	
 
 	
 }
