@@ -61,6 +61,13 @@ public class Carriage {
 		}
 	}
 	
+	void refresh() {
+		this.available_confirm_seats=0;
+		for(Coach coach:coach_list) {
+			coach.refresh();
+			this.available_confirm_seats+=coach.getAvailable_confirm_seats_count();
+		}
+	}
 	
 	private ArrayList<Coach> bindCoach(HashMap<String,Object>coach_instances,int coach_count){
 		ArrayList<Coach> coach_list=new ArrayList<Coach>();

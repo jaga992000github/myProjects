@@ -50,7 +50,7 @@ public class TrainInstancesTemplates implements TemplateInterface{
 //		HashMap<String,Object> a3_carriage=avaiable_carriage_instances.get("3tyre_AC_sleeper");
 //		HashMap<String,Object> a2_carriage=avaiable_carriage_instances.get("2tyre_AC_sleeper");
 //		HashMap<String,Object> a1_carriage=avaiable_carriage_instances.get("1tyre_AC_sleeper");
-		s_carriage.put("coach_count",1);
+		s_carriage.put("coach_count",3);
 //		a3_carriage.put("coach_count",2);
 //		a2_carriage.put("coach_count",2);
 //		a1_carriage.put("coach_count",2);

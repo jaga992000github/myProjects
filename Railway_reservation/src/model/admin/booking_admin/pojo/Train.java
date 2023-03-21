@@ -53,8 +53,14 @@ public class Train {
 		String formated_time=dateTime.format(formatter);
 		return formated_time;
 	}
-	public Train() {
-		
+	
+	public void refresh() {
+		for(Map.Entry<String, Carriage> entry:carriages.entrySet()) {
+			Carriage carriage=entry.getValue();
+			carriage.refresh();
+		}
+	}
+	public Train() {	
 	}
 	
 	public Train (HashMap<String,Object> train_instances) {

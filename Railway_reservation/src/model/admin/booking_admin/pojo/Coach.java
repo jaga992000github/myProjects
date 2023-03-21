@@ -25,7 +25,7 @@ public class Coach {
 		this.seat_ratio=(int[]) coach_instances.get("seat_ratio");
 		this.is_sleeper=(boolean)coach_instances.get("is_sleeper");
 		this.coach_seats= bindSeats();
-		this.available_seats=refreshAvailable_seats();
+		this.available_seats=refresh();
 	}
 	private HashMap<HashMap<String, Object>, Seat> bindSeats(){
 		int row=0,col=0;
@@ -147,7 +147,7 @@ public class Coach {
 	}
 	
 	
-	public Queue<Seat> refreshAvailable_seats() {
+	Queue<Seat> refresh() {
 		Queue<Seat>available_seats=new LinkedList<Seat>();
 		int row,col;
 		Seat seat;
@@ -161,10 +161,12 @@ public class Coach {
 				seat_graph.put("row",row);
 				seat_graph.put("col",col);
 				seat=coach_seats.get(seat_graph);
+				//seat.setBooked_as("vacant");
+				//seat.setIs_booked(false);
 				seat.setIs_booked(!checkSeatAvailabilityInRoute(seat));
 				if(!seat.is_booked()) {
 					available_seats.add(seat);
-					//System.out.println(seat_no);
+				//	System.out.println(seat_no);
 				}
 				else {
 					seat.setBooked_as("confirm");
@@ -179,6 +181,7 @@ public class Coach {
 	
 	private boolean checkSeatAvailabilityInRoute(Seat seat) {
 		if(seat.getEngaging_stop()==null) {
+			//System.out.println("0_true");
 			return true;
 		}
 		if(from_stop==null||to_stop==null) {
