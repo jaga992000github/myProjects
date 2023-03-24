@@ -11,7 +11,4 @@ public class TrainOutputs {
 	public void printDetails(Train train) {
 		System.out.println(train.getTrainDetails());
 	}
-	public void printNotAvailabe() {
-		System.out.println("There is no train available");
-	}
 }

@@ -11,7 +11,7 @@ public class Coach {
 	private HashMap<HashMap<String,Object>,Seat> coach_seats;//to map seats by row,col, and seat no
 	private Stop from_stop;
 	private Stop to_stop;
-	private Queue<Seat> available_seats;
+	private ArrayList<Seat> available_seats;
 	private int available_confirm_seats_count;
 	
 	public Coach() {
@@ -147,8 +147,8 @@ public class Coach {
 	}
 	
 	
-	Queue<Seat> refresh() {
-		Queue<Seat>available_seats=new LinkedList<Seat>();
+	ArrayList<Seat> refresh() {
+		ArrayList<Seat>available_seats=new ArrayList<Seat>();
 		int row,col;
 		Seat seat;
 		int seat_no=1;
@@ -161,12 +161,10 @@ public class Coach {
 				seat_graph.put("row",row);
 				seat_graph.put("col",col);
 				seat=coach_seats.get(seat_graph);
-				//seat.setBooked_as("vacant");
-				//seat.setIs_booked(false);
 				seat.setIs_booked(!checkSeatAvailabilityInRoute(seat));
 				if(!seat.is_booked()) {
 					available_seats.add(seat);
-				//	System.out.println(seat_no);
+					//System.out.println(seat_no);
 				}
 				else {
 					seat.setBooked_as("confirm");
@@ -194,7 +192,7 @@ public class Coach {
 		double vac_stop_km=seat.getVcant_stop().getKm_from_start();
 		if(from_stop_km<eng_stop_km
 				&&to_stop_km<=eng_stop_km) {
-			//System.out.println("2_true");
+				//System.out.println("2_true");
 			return true;
 		}
 		else if(from_stop_km>=vac_stop_km
@@ -264,7 +262,7 @@ public class Coach {
 	public int getAvailable_confirm_seats_count() {
 		return  this.available_confirm_seats_count;
 	}
-	public Queue<Seat> getAvailable_seats(){
+	public ArrayList<Seat> getAvailable_seats(){
 		return this.available_seats;
 	}
 	

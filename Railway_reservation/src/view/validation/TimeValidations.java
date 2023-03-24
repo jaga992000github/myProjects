@@ -17,7 +17,7 @@ public class TimeValidations {
 		values_list.add("today");
 		values_list.add("select date");
 		LocalDate selected_date;
-		String selection=nv.validateSelection(values_list);
+		String selection=nv.validateSelectionValue(values_list);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		if(selection.equals("today")) {
 			selected_date=LocalDate.now();
@@ -47,7 +47,7 @@ public class TimeValidations {
 		values_list.add("current_time");
 		values_list.add("select_time");
 		LocalTime selected_time;
-		String selection=nv.validateSelection(values_list);
+		String selection=nv.validateSelectionValue(values_list);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 		if(selection.equals("current_time")) {
 			selected_time=LocalTime.now();

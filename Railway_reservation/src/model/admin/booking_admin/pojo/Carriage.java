@@ -23,9 +23,7 @@ public class Carriage {
 	@Override
 	public String toString(){
 		String str="";
-		str+="\n\nCarriage: "+this.class_type+"\n";
-		str+="available confirm seats "+this.available_confirm_seats+"\n";
-		str+="waiting List "+waiting_list.size()+"\n";
+		str+=getCarriageDetails() ;
 		for(Coach coach:coach_list) {
 			str+=coach.toString()+"\n";
 		}
@@ -34,6 +32,24 @@ public class Carriage {
 	public Carriage() {
 		
 	}
+	
+	public String getCarriageDetails() {
+		String str="";
+		str+="\n\nCarriage: "+this.class_type+"\n";
+		str+="available confirm seats: "+this.available_confirm_seats+"\n";
+		str+="waiting List: "+waiting_list.size()+"\n";
+		str+="Cost per Person:"+calculateTravelCost()+"\n";
+		return str;
+	}
+	private double calculateTravelCost() {
+		double travel_cost=0.0;
+		double travel_distance_in_km=this.passenger_reaching_stop.getKm_from_start()-
+				this.passenger_starting_stop.getKm_from_start();
+		travel_cost+=this.basic_fee;
+		travel_cost+=travel_distance_in_km*this.cost_per_km;	
+		return travel_cost;
+	}
+	
 	public Carriage (HashMap<String,Object> carriage_instances) {
 		this.alpha_coach_id=((String) carriage_instances.get("alpha_coach_id"));
 		this.class_type=(String) carriage_instances.get("class_type");

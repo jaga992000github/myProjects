@@ -23,7 +23,7 @@ public class TrainCreation {
 		TrainInstancesTemplates tit=new TrainInstancesTemplates();
 		if(decide("Train")) {
 			train_instances=tit.getAvaiable_train_instances()
-					.get(nv.validateSelection(tit.getAvailabe_train_instances_keys()));
+					.get(nv.validateSelectionValue(tit.getAvailabe_train_instances_keys()));
 			System.out.println("Enter new train starting time");
 			TimeValidations tv=new 	TimeValidations();
 			LocalDateTime train_starting_time=tv.avoidOldTime((LocalDateTime) train_instances.get("train_starting_time"));
@@ -46,7 +46,7 @@ public class TrainCreation {
 		RouteInstancesTemplates rit=new RouteInstancesTemplates();
 		if(decide("Route")) {
 			route_instances=rit.getAvailable_route_instances()
-					.get(nv.validateSelection(rit.getAvailable_route_instances_keys()));
+					.get(nv.validateSelectionValue(rit.getAvailable_route_instances_keys()));
 		}
 		else {
 			route_instances=gd.getRouteDetails();
@@ -76,7 +76,7 @@ public class TrainCreation {
 		CarriageInstancesTemplates crit=new CarriageInstancesTemplates();
 		if(decide("Carriage")) {
 			carriage_instances=crit.getAvaiable_carriage_instances()
-					.get(nv.validateSelection(crit.getAvailable_class_name_keys()));
+					.get(nv.validateSelectionValue(crit.getAvailable_class_name_keys()));
 			System.out.println("enter coach count");
 			int coach_count=nv.validateIntegerInput();
 			carriage_instances.put("coach_count", coach_count);
@@ -95,7 +95,7 @@ public class TrainCreation {
 		CoachInstancesTemplates chit=new CoachInstancesTemplates();
 		if(decide("Coach")) {
 			coach_instances=chit.getAvalable_coach_instances()
-					.get(nv.validateSelection(chit.getAvailable_coach_keys()));
+					.get(nv.validateSelectionValue(chit.getAvailable_coach_keys()));
 		}
 		else {
 			coach_instances=gd.getCoachDetails();

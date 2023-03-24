@@ -1,13 +1,9 @@
 package view.validation;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.swing.text.DateFormatter;
 
 public class NumberValidations {
 	Scanner scan=new Scanner(System.in);
@@ -28,7 +24,7 @@ public class NumberValidations {
 		return num;
 	}
 	
-	public String validateSelection(ArrayList<String> values_list) {
+	public String validateSelectionValue(ArrayList<String> values_list) {
 		String selected_value="";
 		for(int i=0;i<values_list.size();i++) {
 			String value=values_list.get(i);
@@ -47,6 +43,27 @@ public class NumberValidations {
 		}
 		System.out.println(selected_value+" -Selected\n");
 		return selected_value;
+	}
+	public int validateSelectionNumber(ArrayList<String> values_list) {
+		String selected_value="";
+		int selected_value_id=0;
+		for(int i=0;i<values_list.size();i++) {
+			String value=values_list.get(i);
+			System.out.println((i+1)+":->"+value);
+		}
+		while(true) {
+			selected_value_id=validateIntegerInput();
+			if((selected_value_id>values_list.size())||(selected_value_id<1)) {
+				System.out.println("Please enter "
+						+ "\ngiven Numbers only\n");
+			}
+			else {
+			selected_value=values_list.get(selected_value_id-1);
+			break;
+			}
+		}
+		System.out.println(selected_value+" -Selected\n");
+		return selected_value_id;
 	}
 	
 	public int validateTrainNoInput(){
@@ -104,7 +121,7 @@ public class NumberValidations {
 		values_list.add("1:1");values_list.add("1:2");values_list.add("1:3");
 		values_list.add("2:1");values_list.add("2:2");values_list.add("2:3");
 		values_list.add("3:1");values_list.add("3:2");values_list.add("3:3");
-		String selection=validateSelection(values_list);
+		String selection=validateSelectionValue(values_list);
 		seat_ratio[0]=Integer.parseInt(selection.charAt(0)+"");
 		seat_ratio[1]=Integer.parseInt(selection.charAt(2)+"");	
 		return seat_ratio;

@@ -1,5 +1,6 @@
 package model.admin.booking_admin.pojo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,19 +35,19 @@ public class AvailableTrains {
 		return route_matched_trains;
 	}
 	
-	private ArrayList<Train> searchTrainsByTime(ArrayList<Train> route_matched_trains,LocalDateTime dateTime){
+	private ArrayList<Train> searchTrainsByTime(ArrayList<Train> route_matched_trains,LocalDate date){
 		ArrayList<Train> time_matched_trains=new ArrayList<Train>();
 		for(Train train:route_matched_trains) {
-			if((dateTime.toLocalDate()).equals(train.getTrain_starting_time().toLocalDate())) {
+			if((date).equals(train.getTrain_starting_time().toLocalDate())) {
 				time_matched_trains.add(train);
 			}
 		}
 		return time_matched_trains;
 	}
 	
-	public ArrayList<Train> searchTrains(String from_stop_name,String to_stop_name,LocalDateTime dateTime){
+	public ArrayList<Train> searchTrains(String from_stop_name,String to_stop_name,LocalDate date){
 		ArrayList<Train> route_matched_trains=searchTrainsByRoute(from_stop_name, to_stop_name);
-		return searchTrainsByTime(route_matched_trains, dateTime);
+		return searchTrainsByTime(route_matched_trains, date);
 	}
 	
 	public static HashMap<HashMap<String, Stop>, Train> getAvailable_trains() {
