@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class TimeValidations {
@@ -75,7 +74,6 @@ public class TimeValidations {
 	public LocalDateTime validateInputDateTime() {
 		LocalDate selected_date=validateInputDate();
 		LocalTime selected_time=validateInputTime();
-		String str=selected_date+" "+selected_time;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		LocalDateTime selected_date_time=LocalDateTime.of(selected_date, selected_time);
 		System.out.println(selected_date_time.format(formatter));

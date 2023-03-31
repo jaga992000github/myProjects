@@ -3,7 +3,6 @@ package model.admin.booking_admin.pojo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Queue;
 
 import model.user.booking_user.pojo.Passenger;
 
@@ -13,7 +12,7 @@ public class Carriage {
 	private boolean is_ac;
 	private boolean is_sleeper;
 	private ArrayList<Coach> coach_list;
-	private Queue<Passenger> waiting_list ;
+	private ArrayList<Passenger> waiting_list ;
 	private int available_confirm_seats;
 	private double basic_fee;
 	private double cost_per_km;
@@ -60,13 +59,16 @@ public class Carriage {
 		this.available_confirm_seats=0;
 		this.passenger_starting_stop=(Stop) carriage_instances.get("passenger_starting_stop");
 		this.passenger_reaching_stop=(Stop) carriage_instances.get("passenger_reaching_stop");
+		@SuppressWarnings("unchecked")
 		HashMap<String,Object>coach_instances=(HashMap<String, Object>) carriage_instances.get("coach_instances");
 		int coach_count=(int) carriage_instances.get("coach_count");
-		this.coach_list=this.bindCoach(coach_instances, coach_count);
+		@SuppressWarnings("unchecked")
+		LinkedList<Stop>train_route=(LinkedList<Stop>) carriage_instances.get("train_route");
+		this.coach_list=this.bindCoach(coach_instances, coach_count,train_route);
 		for(Coach coach:coach_list) {
 			this.available_confirm_seats+=coach.getAvailable_confirm_seats_count();
 		}
-		this.waiting_list=new LinkedList<Passenger>();
+		this.waiting_list=new ArrayList<Passenger>();
 	}
 	
 	public void setPassengerRoute(Stop from_stop,Stop to_stop) {
@@ -85,12 +87,13 @@ public class Carriage {
 		}
 	}
 	
-	private ArrayList<Coach> bindCoach(HashMap<String,Object>coach_instances,int coach_count){
+	private ArrayList<Coach> bindCoach(HashMap<String,Object>coach_instances,int coach_count,LinkedList<Stop>train_route){
 		ArrayList<Coach> coach_list=new ArrayList<Coach>();
 		for(int i=1;i<=coach_count;i++) {
 			String alpha_num_coach_id=this.alpha_coach_id+"-"+i;
 			coach_instances.put("coach_id", alpha_num_coach_id);
 			coach_instances.put("is_sleeper", this.is_sleeper);
+			coach_instances.put("train_route", train_route);
 			Coach coach=new Coach(coach_instances);
 			coach_list.add(coach);
 		}
@@ -112,10 +115,10 @@ public class Carriage {
 	public void setCoach_list(ArrayList<Coach> coach_list) {
 		this.coach_list = coach_list;
 	}
-	public Queue<Passenger> getWaiting_list() {
+	public ArrayList<Passenger> getWaiting_list() {
 		return waiting_list;
 	}
-	public void setWaiting_list(Queue<Passenger> waiting_list) {
+	public void setWaiting_list(ArrayList<Passenger> waiting_list) {
 		this.waiting_list = waiting_list;
 	}
 	public int getAvailable_confirm_seats() {
@@ -157,5 +160,15 @@ public class Carriage {
 	public void setIs_sleeper(boolean is_sleeper) {
 		this.is_sleeper = is_sleeper;
 	}
-
+	public int getCurrentWaitingListNO(Passenger passenger) {
+		int index=1;
+		for(Passenger current_passenger :this.waiting_list) {
+			if(passenger.equals(current_passenger)){
+				break;
+			}
+			else {
+			index++;}
+		}
+		return index;
+	}
 }

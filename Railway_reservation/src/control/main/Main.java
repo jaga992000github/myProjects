@@ -9,6 +9,8 @@ public class Main {
 		new ModelInitializer();
 	}
 	public static void main(String[] args) {
-		
+		Home home=new Home();
+		home.SelectUser();
+		System.out.println("thank You");
 	}
 }

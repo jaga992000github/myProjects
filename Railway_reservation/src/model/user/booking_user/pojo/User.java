@@ -1,16 +1,17 @@
 package model.user.booking_user.pojo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class User {
 	private String email;
 	private String password;
-	private HashMap<Integer,Ticket> tickets;
+	private ArrayList<Ticket> tickets;
 	
 	public User (HashMap<String, Object> user_instances) {
 		this.email=(String) user_instances.get("email");
 		this.password=(String) user_instances.get("password");
-		this.tickets=null;
+		this.tickets=new ArrayList<Ticket>();
 	}	
 	
 	public String getEmail() {
@@ -25,10 +26,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public HashMap<Integer,Ticket> getTickets() {
+	public ArrayList<Ticket> getTickets() {
 		return tickets;
 	}
-	public void setTickets(HashMap<Integer,Ticket> tickets) {
+	public void setTickets(ArrayList<Ticket> tickets) {
 		this.tickets = tickets;
 	}
 }

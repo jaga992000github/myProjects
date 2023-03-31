@@ -3,17 +3,14 @@ package view.user.booking_user.inputs;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-
-import model.admin.booking_admin.pojo.Seat;
-import model.user.booking_user.pojo.Passenger;
 import view.validation.NumberValidations;
 
 public class BookingInputs {
 	Scanner scan=new Scanner(System.in);
 	NumberValidations nv=new NumberValidations();
 	
-	public HashMap<String,Object> getUserDetails() {
-		HashMap<String,Object> user_instances=new HashMap<String,Object>();
+	public HashMap<String,String> getUserDetails() {
+		HashMap<String,String> user_instances=new HashMap<String,String>();
 		System.out.println("Enter email");
 		String email=scan.next();
 		System.out.println("Enter password");

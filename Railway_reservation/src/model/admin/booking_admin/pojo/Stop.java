@@ -1,7 +1,6 @@
 package model.admin.booking_admin.pojo;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.HashMap;
 
 public class Stop {
@@ -12,12 +11,15 @@ public class Stop {
 	private LocalDateTime reaching_time;
 	private Stop previous_stop;
 	private Stop next_stop;
+	private boolean is_engaged;
+	
 	
 	public Stop(HashMap<String,Object> stop_instances) {
 		super();
 		this.name = (String) stop_instances.get("name");
 		this.km_from_start = (double) stop_instances.get("km_from_start");
 		this.waiting_time = (long) stop_instances.get("waiting_time");
+		this.is_engaged=false;
 	}
 	
 	public void setTiming(double train_speed) {
@@ -108,5 +110,13 @@ public class Stop {
 	}
 	public void setNext_stop(Stop next_stop) {
 		this.next_stop = next_stop;
+	}
+
+	public boolean isIs_engaged() {
+		return is_engaged;
+	}
+
+	public void setIs_engaged(boolean is_engaged) {
+		this.is_engaged = is_engaged;
 	}
 }

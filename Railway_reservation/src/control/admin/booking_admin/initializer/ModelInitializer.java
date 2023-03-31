@@ -1,7 +1,6 @@
 package control.admin.booking_admin.initializer;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -9,7 +8,6 @@ import model.admin.booking_admin.pojo.AvailableTrains;
 import model.admin.booking_admin.pojo.Carriage;
 import model.admin.booking_admin.pojo.Coach;
 import model.admin.booking_admin.pojo.Seat;
-import model.admin.booking_admin.pojo.Stop;
 import model.admin.booking_admin.pojo.Train;
 import view.admin.booking_admin.pojo_instances_templates.TrainInstancesTemplates;
 
@@ -24,7 +22,8 @@ public class ModelInitializer {
 		HashMap<String,HashMap<String,Object>>avaiable_train_instances=tt.getAvaiable_train_instances();	
 		for(String train_instances_key:avaiable_train_instances_keys) {
 			HashMap<String,Object> train_instances=avaiable_train_instances.get(train_instances_key);
-			at.addTrain(train_instances);
+			Train train=new Train(train_instances);
+			AvailableTrains.addTrain(train);
 		}
 		String from_stop="stop_1";
 		String to_stop="stop_9";
@@ -37,11 +36,10 @@ public class ModelInitializer {
 		
 		Carriage carriage=train.getCarriages().get("sleeper");
 		ArrayList<Coach> coach_list=carriage.getCoach_list();
-		Stop enggaging_stop=train.getTrain_route().getFirst();
-		Stop vacant_stop=train.getTrain_route().getLast();
+		int free_seat_count=2;
 		for(Coach coach:coach_list) {
 			int seat_no=1;
-			int total_seats=coach.getTotal_seats()-2;
+			int total_seats=coach.getTotal_seats()-free_seat_count;
 			for(int i=1;i<=coach.getTotal_rows();i++) {
 				int row=i;
 				
@@ -55,11 +53,11 @@ public class ModelInitializer {
 					seat_map.put("row", row);
 					seat_map.put("col", col);
 					seat_map.put("seat_no", seat_no);
+					if(seat_no!=9) {
 					Seat seat=coach_seats.get(seat_map);
-					seat.setEngaging_stop(enggaging_stop);
-					seat.setVcant_stop(vacant_stop);
-					seat.setBooked_as("confirm");
+					seat.engageRoute();
 					seat.setIs_booked(true);
+					seat.setBooked_asConfirm();}
 					seat_no++;
 				}
 			}

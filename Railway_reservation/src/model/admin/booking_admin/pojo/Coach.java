@@ -24,10 +24,12 @@ public class Coach {
 		this.total_seats=total_col*total_rows;
 		this.seat_ratio=(int[]) coach_instances.get("seat_ratio");
 		this.is_sleeper=(boolean)coach_instances.get("is_sleeper");
-		this.coach_seats= bindSeats();
+		@SuppressWarnings("unchecked")
+		LinkedList<Stop>train_route=(LinkedList<Stop>) coach_instances.get("train_route");
+		this.coach_seats= bindSeats(train_route);
 		this.available_seats=refresh();
 	}
-	private HashMap<HashMap<String, Object>, Seat> bindSeats(){
+	private HashMap<HashMap<String, Object>, Seat> bindSeats(LinkedList<Stop>train_route){
 		int row=0,col=0;
 		Seat seat =new Seat();
 		char[] seat_pos= {'W','M','A'};
@@ -91,7 +93,10 @@ public class Coach {
 //+++++++++++++++++//System.out.println(seat_instances.get("seat_position")+" seat no"+ seat_no+" birth "+seat_instances.get("birth_position")+" right RAC "+seat_instances.get("RAC_replacable"));//000000000000000000000000000000000000
 				}
 				seat_instances.put("booked_status",false);
+				seat_instances.put("train_route", train_route);
 				seat=new Seat(seat_instances);
+				seat.setFrom_stop(from_stop);
+				seat.setTo_stop(to_stop);
 				HashMap<String,Object> seat_map=new HashMap<String,Object>();
 				seat_map.put("row",row);
 				seat_map.put("col",col);
@@ -123,11 +128,9 @@ public class Coach {
 				col=j;
 				HashMap<String,Object> seat_graph=new HashMap<String,Object>();
 				seat_graph.put("seat_no",seat_no);
-//--------------//System.out.println(seat_no);//000000000000000000000000
 				seat_graph.put("row",row);
 				seat_graph.put("col",col);
 				seat=coach_seats.get(seat_graph);
-//---------------//System.out.println(seat);//0000000000000000000000000000
 				if(seat.is_booked()&&seat.getBooked_as().equals("confirm")) {
 					str+=" ["+seat.getSeat_no()+"] ";
 				}
@@ -161,13 +164,11 @@ public class Coach {
 				seat_graph.put("row",row);
 				seat_graph.put("col",col);
 				seat=coach_seats.get(seat_graph);
-				seat.setIs_booked(!checkSeatAvailabilityInRoute(seat));
+				seat.setFrom_stop(from_stop);
+				seat.setTo_stop(to_stop);
 				if(!seat.is_booked()) {
 					available_seats.add(seat);
 					//System.out.println(seat_no);
-				}
-				else {
-					seat.setBooked_as("confirm");
 				}
 				seat_no++;
 			}
@@ -175,41 +176,7 @@ public class Coach {
 		this.available_seats=available_seats;
 		return available_seats;
 	}
-	
-	
-	private boolean checkSeatAvailabilityInRoute(Seat seat) {
-		if(seat.getEngaging_stop()==null) {
-			//System.out.println("0_true");
-			return true;
-		}
-		if(from_stop==null||to_stop==null) {
-			//System.out.println("1_true");
-			return true;
-		}
-		double from_stop_km=from_stop.getKm_from_start();
-		double to_stop_km=to_stop.getKm_from_start();
-		double eng_stop_km=seat.getEngaging_stop().getKm_from_start();
-		double vac_stop_km=seat.getVcant_stop().getKm_from_start();
-		if(from_stop_km<eng_stop_km
-				&&to_stop_km<=eng_stop_km) {
-				//System.out.println("2_true");
-			return true;
-		}
-		else if(from_stop_km>=vac_stop_km
-				&&to_stop_km>vac_stop_km) {
-			//System.out.println("3_true");
-			return true;
-		}//System.out.println("fase");
-		return false;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	public String getCoach_id() {

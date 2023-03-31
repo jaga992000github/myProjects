@@ -1,10 +1,8 @@
 package view.admin.booking_admin.inputs;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 import view.validation.DuplicateValidations;
@@ -56,7 +54,7 @@ public class GetDetails {
 				HashMap<String,Object> stop_instances=new HashMap<String,Object>();
 				stop_instances.put("name",name);
 				stop_instances.put("km_from_start",km_from_start);
-				stop_instances.put("waiting_time",(long)2);
+				stop_instances.put("waiting_time",(long)wating_time);
 				stop_instances_list.add(stop_instances);
 			}
 			else {

@@ -1,5 +1,6 @@
 package model.user.booking_user.pojo;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import model.admin.booking_admin.pojo.Carriage;
@@ -7,18 +8,20 @@ import model.admin.booking_admin.pojo.Stop;
 import model.admin.booking_admin.pojo.Train;
 
 public class Ticket {
-	public static int last_pnr_no=1000000000;
+	private static int last_pnr_no=1000000000;
 	private int pnr_no;
 	private Train train;
 	private Stop from_stop;
 	private Stop to_stop;
-	private String coach_id;
 	private String class_type;
 	private ArrayList<Passenger> passengers_details;
 	private double basic_fee;
 	private double cost_per_km;
 	private double total_cost;
+	private int no_of_adult_passenger=0;
+	private LocalDateTime booked_time;
 	
+	@SuppressWarnings("unchecked")
 	public Ticket(HashMap<String,Object>ticket_instances){
 		this.pnr_no=(last_pnr_no+1);
 		last_pnr_no+=1;
@@ -26,10 +29,9 @@ public class Ticket {
 		Train train=(Train) ticket_instances.get("train");
 		this.train=train;
 		
-		this.coach_id=(String) ticket_instances.get("coach_id");
 		this.passengers_details=(ArrayList<Passenger>) ticket_instances.get("passengers_details");
-		this.from_stop=(Stop) ticket_instances.get("from_stop");
-		this.to_stop=(Stop) ticket_instances.get("to_stop");
+		this.from_stop=train.getPassenger_starting_stop();
+		this.to_stop=train.getPassenger_reaching_stop();
 		this.class_type=(String) ticket_instances.get("class_type");
 		HashMap<String,Carriage> carriages=train.getCarriages();
 		
@@ -38,25 +40,23 @@ public class Ticket {
 		this.cost_per_km=carriage.getCost_per_km();
 		
 		this.total_cost=getTicketCost();
+		this.booked_time=LocalDateTime.now();
 	}
 	
 	
 	@Override
 	public String toString() {
-		String str= "Ticket"
-				+ " pnr_no=" + this.pnr_no + "\n,"
+		String str= "Ticket("+booked_time
+				+ ")\n-pnr_no=" + this.pnr_no + "\n,"
 				+ this.train.getTrainDetails();
-			str+= " from_stop=" + this.from_stop + "\n"
-				+ " to_stop=" + this.to_stop + "\n"
-				+ " coach_id=" + this.coach_id+"\n"
-				+ " class_type=" + this.class_type + "\n"
-				+ " passengers_details=";
+			str+="\n\n-class_type=" + this.class_type + "\n\n";
 				for(Passenger passenger:this.passengers_details) {
 					str+="\n"+passenger.toString();
 				}
-				str+=" basic_fee="+" this.basic_fee" +"\n"
+				str+=" basic_fee="+ this.basic_fee +"\n"
 				+ " total_km="+this.getTotalKm()+"\n"
 				+ " cost_per_km=" + this.cost_per_km + "\n"
+				+ " no_of_adult_passenger=" + this.no_of_adult_passenger + "\n\n"
 				+ " total_cost=" + this.total_cost + "\n";
 		 return str;
 	}
@@ -77,7 +77,9 @@ public class Ticket {
 	private double getTicketCost() {
 		double total_cost=0;
 		for(Passenger passenger:this.passengers_details) {
+			passenger.setPNR_NO(pnr_no);
 			if(passenger.getAge()>5) {
+				no_of_adult_passenger++;
 				total_cost+=getStopToStopCost();
 			}
 		}
@@ -135,16 +137,6 @@ public class Ticket {
 	}
 
 
-	public String getCoach_id() {
-		return coach_id;
-	}
-
-
-	public void setCoach_id(String coach_id) {
-		this.coach_id = coach_id;
-	}
-
-
 	public String getClass_type() {
 		return class_type;
 	}
@@ -192,6 +184,10 @@ public class Ticket {
 	public void setTotal_cost(double total_cost) {
 		this.total_cost = total_cost;
 	}
-	
+
+
+	public LocalDateTime getBooked_time() {
+		return booked_time;
+	}
 	
 }

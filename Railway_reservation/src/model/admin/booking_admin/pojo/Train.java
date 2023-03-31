@@ -1,10 +1,8 @@
 package model.admin.booking_admin.pojo;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.Map.Entry;
 
 
 public class Train {
@@ -63,6 +61,7 @@ public class Train {
 	public Train() {	
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Train (HashMap<String,Object> train_instances) {
 		this.train_name=(String) train_instances.get("train_name");
 		this.train_no=(int) train_instances.get("train_no");
@@ -76,6 +75,7 @@ public class Train {
 		for(Stop stop:this.train_route) {
 			this.stop_map.put(stop.getName(), stop);
 		}
+		setPassengerRoute(train_route.getFirst(),train_route.getLast());
 	}
 	
 	private LinkedList<Stop> bindStops(ArrayList<HashMap<String,Object>>stop_instances_list){
@@ -124,6 +124,7 @@ public class Train {
 	private HashMap<String,Carriage> bindCarriage(ArrayList<HashMap<String,Object>>carriage_list){
 		HashMap<String,Carriage> carriages=new HashMap<String,Carriage>();
 		for(HashMap<String,Object> carriage_instances:carriage_list) {
+			carriage_instances.put("train_route", train_route);
 			Carriage carriage=new Carriage(carriage_instances);
 			carriages.put(carriage.getClass_type(), carriage);
 		}
@@ -178,6 +179,12 @@ public class Train {
 	}
 	public HashMap<String,Stop> getStop_map() {
 		return stop_map;
+	}
+	public Stop getPassenger_starting_stop() {
+		return passenger_starting_stop;
+	}
+	public Stop getPassenger_reaching_stop() {
+		return passenger_reaching_stop;
 	}
 
 }

@@ -1,8 +1,6 @@
 package view.validation;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import view.admin.booking_admin.pojo_instances_templates.CarriageInstancesTemplates;
@@ -30,6 +28,7 @@ public class DuplicateValidations {
 		}
 		return train_name;
 	}
+	@SuppressWarnings("unlikely-arg-type")
 	public int checkDuplicateTrainNumbers() {
 		TrainInstancesTemplates tit=new TrainInstancesTemplates();
 		NumberValidations nv=new NumberValidations();
@@ -49,8 +48,7 @@ public class DuplicateValidations {
 		return train_number;
 	}
 	public String checkDuplicateClassTypes() {
-		CarriageInstancesTemplates cit=new CarriageInstancesTemplates();
-		ArrayList<String> available_class_types=cit.getAvailable_class_name_keys();
+		ArrayList<String> available_class_types=CarriageInstancesTemplates.getAvailable_class_name_keys();
 		String class_type_name="";
 		while(true) {
 			System.out.println("Enter class_type_name");
@@ -66,8 +64,7 @@ public class DuplicateValidations {
 		return class_type_name;
 	}
 	public String checkDuplicateCoachId() {
-		CarriageInstancesTemplates cit=new CarriageInstancesTemplates();
-		ArrayList<String> available_coach_id=cit.getAvailable_coach_ids();
+		ArrayList<String> available_coach_id=CarriageInstancesTemplates.getAvailable_coach_ids();
 		String coach_id="";
 		while(true) {
 			System.out.println("Enter coach Alpha ID");
@@ -83,8 +80,7 @@ public class DuplicateValidations {
 		return coach_id;
 	}
 	public String checkDuplicateCoachNames() {
-		CoachInstancesTemplates cit=new CoachInstancesTemplates();
-		ArrayList<String> available_coach_name=cit.getAvailable_coach_keys();
+		ArrayList<String> available_coach_name=CoachInstancesTemplates.getAvailable_coach_keys();
 		String coach_name="";
 		while(true) {
 			System.out.println("Enter coach_name");
@@ -100,8 +96,7 @@ public class DuplicateValidations {
 		return coach_name;
 	}
 	public String checkDuplicateRouteNames() {
-		RouteInstancesTemplates rit=new RouteInstancesTemplates();
-		ArrayList<String> available_route_names=rit.getAvailable_route_instances_keys();
+		ArrayList<String> available_route_names=RouteInstancesTemplates.getAvailable_route_instances_keys();
 		String route_name="";
 		String rt="";
 		while(true) {

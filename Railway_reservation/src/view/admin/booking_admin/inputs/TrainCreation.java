@@ -3,12 +3,9 @@ package view.admin.booking_admin.inputs;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 import control.admin.booking_admin.initializer.ModelInitializer;
 import control.admin.booking_admin.initializer.ViewInitializer;
-import model.admin.booking_admin.pojo.Carriage;
-import model.admin.booking_admin.pojo.Coach;
 import model.admin.booking_admin.pojo.Train;
 import view.admin.booking_admin.pojo_instances_templates.*;
 import view.validation.NumberValidations;
@@ -46,7 +43,7 @@ public class TrainCreation {
 		RouteInstancesTemplates rit=new RouteInstancesTemplates();
 		if(decide("Route")) {
 			route_instances=rit.getAvailable_route_instances()
-					.get(nv.validateSelectionValue(rit.getAvailable_route_instances_keys()));
+					.get(nv.validateSelectionValue(RouteInstancesTemplates.getAvailable_route_instances_keys()));
 		}
 		else {
 			route_instances=gd.getRouteDetails();
@@ -75,8 +72,8 @@ public class TrainCreation {
 		HashMap<String,Object> carriage_instances = null;
 		CarriageInstancesTemplates crit=new CarriageInstancesTemplates();
 		if(decide("Carriage")) {
-			carriage_instances=crit.getAvaiable_carriage_instances()
-					.get(nv.validateSelectionValue(crit.getAvailable_class_name_keys()));
+			carriage_instances=CarriageInstancesTemplates.getAvaiable_carriage_instances()
+					.get(nv.validateSelectionValue(CarriageInstancesTemplates.getAvailable_class_name_keys()));
 			System.out.println("enter coach count");
 			int coach_count=nv.validateIntegerInput();
 			carriage_instances.put("coach_count", coach_count);
@@ -95,7 +92,7 @@ public class TrainCreation {
 		CoachInstancesTemplates chit=new CoachInstancesTemplates();
 		if(decide("Coach")) {
 			coach_instances=chit.getAvalable_coach_instances()
-					.get(nv.validateSelectionValue(chit.getAvailable_coach_keys()));
+					.get(nv.validateSelectionValue(CoachInstancesTemplates.getAvailable_coach_keys()));
 		}
 		else {
 			coach_instances=gd.getCoachDetails();

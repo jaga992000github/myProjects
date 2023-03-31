@@ -1,76 +1,88 @@
 package model.user.booking_user.operations;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Queue;
-
-import control.admin.booking_admin.initializer.ModelInitializer;
-import control.admin.booking_admin.initializer.ViewInitializer;
-import model.admin.booking_admin.business_logics.AgeOderTest;
 import model.admin.booking_admin.pojo.AvailableTrains;
 import model.admin.booking_admin.pojo.Carriage;
 import model.admin.booking_admin.pojo.Coach;
 import model.admin.booking_admin.pojo.Seat;
-import model.admin.booking_admin.pojo.Stop;
 import model.admin.booking_admin.pojo.Train;
+import model.user.booking_user.pojo.AvailableTickets;
 import model.user.booking_user.pojo.Passenger;
-import view.admin.booking_admin.outputs.TrainOutputs;
+import model.user.booking_user.pojo.Ticket;
 
 public class BookingModel {
-	
-	private String from_stop_name;
-	private String to_stop_name;
+
 	private Train train;
 	private Carriage carriage;
 	private  char prefered_birth;
+	private int coach_id_index;
 	
 	public synchronized ArrayList<Train> getMatchedTrains(String from_stop_name,String to_stop_name,LocalDate today) {
-		this.from_stop_name=from_stop_name;
-		this.to_stop_name=to_stop_name;
 		AvailableTrains at=new AvailableTrains();
-		ArrayList<Train> matched_trains =at.searchTrains(this.from_stop_name, this.to_stop_name, today);
+		ArrayList<Train> matched_trains =at.searchTrains(from_stop_name,to_stop_name, today);
 		return matched_trains;
 	}
 	
-	public synchronized ArrayList<Passenger> book(Train train,Carriage carriage,ArrayList<HashMap<String,Object>> passenger_instances_list) {
+	public synchronized Ticket getTicket(Train train,Carriage carriage,ArrayList<HashMap<String,Object>> passenger_instances_list) {
 		this.train=train;
 		this.carriage=carriage;
+		
+		ArrayList<Passenger> passengers_details=book(passenger_instances_list);
+		String class_type=carriage.getClass_type();
+		
+		HashMap<String,Object>ticket_instances=new HashMap<String,Object>();
+		ticket_instances.put("train", train);
+		ticket_instances.put("class_type", class_type);
+		ticket_instances.put("passengers_details", passengers_details);
+		
+		Ticket ticket=new Ticket(ticket_instances);
+		AvailableTickets.addTicket(ticket);
+		return ticket;
+	}
+	
+	private ArrayList<Passenger> book(ArrayList<HashMap<String,Object>> passenger_instances_list) {
 		ArrayList<Passenger> passengers_list =new ArrayList<Passenger>();
-		Queue<Passenger> waiting_list=carriage.getWaiting_list();
+		ArrayList<Passenger> waiting_list=carriage.getWaiting_list();
 		for(HashMap<String,Object> passenger_instances:passenger_instances_list) {
 			Passenger passenger=new Passenger(passenger_instances);
 			passengers_list.add(passenger);
 		}
 		Collections.sort(passengers_list, new PassengerAgeSort());
 		for(Passenger passenger:passengers_list) {
-			train.refresh();
-			if(carriage.getAvailable_confirm_seats()>0) {
-				this.prefered_birth=passenger.getPreferd_birth();
-				Seat seat=getSeatForPassenger();
-				passenger.setSeat(seat);
-				passenger.setBooked_status("confirm");
-				passenger.setClass_type(carriage.getClass_type());
-				passenger.setCoach_id(" ");
+			if(passenger.getAge()>5) {
+				train.refresh();
+				if(carriage.getAvailable_confirm_seats()>0) {
+					this.prefered_birth=passenger.getPreferd_birth();
+					Seat seat=getSeatForPassenger();
+					passenger.setSeat(seat);
+					passenger.setBooked_status("confirm");
+					//passenger.setClass_type(carriage.getClass_type());
+					Coach coach=carriage.getCoach_list().get(coach_id_index);
+					passenger.setCoach_id(coach.getCoach_id());
+				}
+				else {
+					waiting_list.add(passenger);
+					int waiting_list_no=waiting_list.size();
+					passenger.setBooked_status("waiting_list");
+					passenger.setWaiting_list_no(waiting_list_no);
+				}
 			}
 			else {
-				waiting_list.add(passenger);
-				int waiting_list_no=waiting_list.size();
-				passenger.setBooked_status("waiting_list_no_"+waiting_list_no);
+				passenger.setBooked_status("confirm_child");
 			}
 		}
+			
 		return passengers_list;
 	}
 	
 	private  Seat getSeatForPassenger() {
 		Seat seat=getBirthMatchedSeat();
-		Stop en_stop=train.getStop_map().get(this.from_stop_name);
-		Stop vac_stop=train.getStop_map().get(this.to_stop_name);
-		seat.setEngaging_stop(en_stop);
-		seat.setVcant_stop(vac_stop);
+		seat.setBooked_asConfirm();
+		seat.engageRoute();
 		return seat;
 	}
 	
@@ -92,7 +104,7 @@ public class BookingModel {
 				ArrayList<Seat> available_seats=coach.getAvailable_seats();
 				for(Seat seat:available_seats) {
 					if(isBirthMatch(seat)) {
-						//String coach_id=coach.getCoach_id();
+						this.coach_id_index=i;
 					return seat;}
 				}
 				break;
@@ -120,26 +132,17 @@ public class BookingModel {
 	}
 	
 	
-	
-	public String getFrom_stop_name() {
-		return from_stop_name;
+	public Train getTrain() {
+		return train;
 	}
 
-	public void setFrom_stop_name(String from_stop_name) {
-		this.from_stop_name = from_stop_name;
+	public void setTrain(Train train) {
+		this.train = train;
 	}
 
-	public String getTo_stop_name() {
-		return to_stop_name;
-	}
+	
 
-	public void setTo_stop_name(String to_stop_name) {
-		this.to_stop_name = to_stop_name;
-	}
-	
-	
-	
-	
+
 	private class PassengerAgeSort implements Comparator<Passenger> {
 		@Override
 		public int compare(Passenger p1, Passenger p2) {
