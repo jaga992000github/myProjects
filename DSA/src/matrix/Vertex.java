@@ -2,16 +2,21 @@ package matrix;
 
 import java.util.ArrayList;
 
-public class Vertex<T> {
+import search_interfaces.BFS;
+
+public class Vertex<T> implements BFS<Vertex<T>>{
 	private Matrix<T> matrix;
 	private T value;
 	private ArrayList<Vertex<T>>near_by_verices=new ArrayList<Vertex<T>>();;
 	private int row;
 	private int col;
+	private boolean  isVisited=false;
+	private  int height;
 	
 	
 
 	public Vertex(Matrix<T> matrix) {
+		super();
 		this.matrix=matrix;
 	}
 	@Override
@@ -66,10 +71,10 @@ public class Vertex<T> {
 		checkAndAdd(getBottomVertex());
 		checkAndAdd(getLeftVertex());
 		checkAndAdd(getRightVertex());
-		checkAndAdd(getBottomLeftVertex());
-		checkAndAdd(getBottomRightVertex());
-		checkAndAdd(getTopLeftVertex());
-		checkAndAdd(getTopRightVertex());
+//		checkAndAdd(getBottomLeftVertex());
+//		checkAndAdd(getBottomRightVertex());
+//		checkAndAdd(getTopLeftVertex());
+//		checkAndAdd(getTopRightVertex());
 		return near_by_verices;
 	}
 	
@@ -95,5 +100,33 @@ public class Vertex<T> {
 
 	public void setCol(int col) {
 		this.col = col;
+	}
+	@Override
+	public ArrayList<Vertex<T>> getNearByObj(Vertex<T> obj) {
+		// TODO Auto-generated method stub
+		//System.out.println(obj);
+		Vertex<T> vertex= obj;
+		return vertex.getNear_by_verices();
+	}
+	@Override
+	public void setIsVisited(Vertex<T> obj,boolean bool_val) {
+		// TODO Auto-generated method stub
+		obj.isVisited=bool_val;
+		return;
+	}
+	@Override
+	public boolean getIsVisited(Vertex<T> obj) {
+		// TODO Auto-generated method stub
+		return obj.isVisited;
+	}
+	@Override
+	public void setHeight(int high, Vertex<T> obj) {
+		// TODO Auto-generated method stub
+		obj.height=high;
+	}
+	@Override
+	public int getHeight(Vertex<T> obj) {
+		// TODO Auto-generated method stub
+		return obj.height;
 	}
 }
