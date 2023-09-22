@@ -11,7 +11,7 @@ public class Vertex<T> implements BFS<Vertex<T>>{
 	private int row;
 	private int col;
 	private boolean  isVisited=false;
-	private  int height;
+	private  int search_height;
 	
 	
 
@@ -120,13 +120,13 @@ public class Vertex<T> implements BFS<Vertex<T>>{
 		return obj.isVisited;
 	}
 	@Override
-	public void setHeight(int high, Vertex<T> obj) {
+	public void setSearchHeight(int high, Vertex<T> obj) {
 		// TODO Auto-generated method stub
-		obj.height=high;
+		obj.search_height=high;
 	}
 	@Override
-	public int getHeight(Vertex<T> obj) {
+	public int getSearchHeight(Vertex<T> obj) {
 		// TODO Auto-generated method stub
-		return obj.height;
+		return obj.search_height;
 	}
 }

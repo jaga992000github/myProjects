@@ -22,7 +22,7 @@ public interface  BFS<T> {
 		T current=q.peek();
 //		System.out.println(current);
 		ArrayList<T> near= getNearByObj(current);
-		int current_height=getHeight(current);
+		int current_height=getSearchHeight(current);
 		for(T obj:near) {
 			if(obj.equals(end)) {
 				q.clear();
@@ -38,7 +38,7 @@ public interface  BFS<T> {
 						ArrayList<T> map_list=new ArrayList<T>();
 						level_map.put(current_height+1, map_list);
 					}
-					setHeight(current_height+1, obj);
+					setSearchHeight(current_height+1, obj);
 					setIsVisited(obj, true);
 					level_map.get(current_height+1).add(obj);
 				}
@@ -53,7 +53,7 @@ public interface  BFS<T> {
 	public default  ArrayList<T> getShortestPath(T start,T end){
 		HashMap<Integer,ArrayList<T>> level_map=new HashMap<Integer,ArrayList<T>>();
 		Queue<T> q=new LinkedList<T>();
-		setHeight(0,start);
+		setSearchHeight(0,start);
 		q.add(start);
 		mapLevel(0,start, level_map);
 		setIsVisited(start, true);
@@ -83,6 +83,6 @@ public interface  BFS<T> {
 	public abstract ArrayList<T>  getNearByObj(T obj);
 	public abstract boolean  getIsVisited(T obj);
 	public abstract void  setIsVisited(T obj,boolean bool_val);
-	public abstract void setHeight(int high,T obj);
-	public abstract int getHeight(T obj);
+	public abstract void setSearchHeight(int high,T obj);
+	public abstract int getSearchHeight(T obj);
 }

@@ -2,12 +2,16 @@ package tree;
 
 import java.util.ArrayList;
 
-public class Node<T> {
+import search_interfaces.BFS;
+
+public class Node<T> implements BFS<Node<T>>{
 	private Tree<T> tree;
 	private ArrayList<Node<T>> children=new ArrayList<Node<T>>();
 	private T value;
 	private int height;
 	private Node<T> parent;
+	private boolean is_visited=false;
+	private  int search_height;
 	
 	@Override
 	public String toString() {
@@ -63,6 +67,48 @@ public class Node<T> {
 
 	public void setParent(Node<T> parent) {
 		this.parent = parent;
+	}
+	
+	
+
+	@Override
+	public ArrayList<Node<T>> getNearByObj(Node<T> obj) {
+		// TODO Auto-generated method stub
+		ArrayList<Node<T>> nearby_obj=new ArrayList<Node<T>>();
+		if(obj.getChildren()!=null) {
+			for(Node<T> i:obj.getChildren()) {
+				nearby_obj.add(i);
+			}
+		}
+		if(obj.getParent()!=null) {
+			nearby_obj.add(obj.getParent());
+		}
+		
+		return nearby_obj;
+	}
+
+	@Override
+	public boolean getIsVisited(Node<T> obj) {
+		// TODO Auto-generated method stub
+		return obj.is_visited;
+	}
+
+	@Override
+	public void setIsVisited(Node<T> obj, boolean bool_val) {
+		// TODO Auto-generated method stub
+		obj.is_visited=bool_val;
+	}
+
+	@Override
+	public void setSearchHeight(int high, Node<T> obj) {
+		// TODO Auto-generated method stub
+		obj.search_height=high;
+	}
+
+	@Override
+	public int getSearchHeight(Node<T> obj) {
+		// TODO Auto-generated method stub
+		return obj.search_height;
 	}
 
 }

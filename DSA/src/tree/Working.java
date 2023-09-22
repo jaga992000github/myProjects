@@ -1,5 +1,9 @@
 package tree;
 
+import java.util.ArrayList;
+
+import search_interfaces.BFS;
+
 public class Working {
 	public static void main(String[] args) {
 		Tree<Integer> tree=new Tree<Integer>();
@@ -22,5 +26,9 @@ public class Working {
 		node_3.addChild(node_7);
 		
 		System.out.println(tree);
+		
+		BFS<Node<Integer>> bfs=new Node<Integer>(tree,0) ;
+		ArrayList<Node<Integer>> sp=bfs.getShortestPath(node_4, node_7);
+		System.out.println(sp);
 	}
 }
